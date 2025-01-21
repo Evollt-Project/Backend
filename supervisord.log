@@ -1,0 +1,55 @@
+2024-11-17 06:05:34,656 INFO Set uid to user 0 succeeded
+2024-11-17 06:05:34,663 INFO supervisord started with pid 1
+2024-11-17 06:05:35,667 INFO spawned: 'laravel-queue_00' with pid 7
+2024-11-17 06:05:35,668 INFO spawned: 'laravel-queue_01' with pid 8
+2024-11-17 06:05:35,670 INFO spawned: 'laravel-queue_02' with pid 9
+2024-11-17 06:05:35,673 INFO spawned: 'laravel-queue_03' with pid 10
+2024-11-17 06:05:35,675 INFO spawned: 'laravel-queue_04' with pid 11
+2024-11-17 06:05:35,678 INFO spawned: 'nginx_00' with pid 12
+2024-11-17 06:05:35,679 INFO spawned: 'php-fpm' with pid 13
+2024-11-17 06:05:35,805 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2024-11-17 06:05:35,806 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2024-11-17 06:05:35,806 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2024-11-17 06:05:35,807 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2024-11-17 06:05:35,811 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2024-11-17 06:05:36,844 INFO spawned: 'laravel-queue_00' with pid 26
+2024-11-17 06:05:36,846 INFO spawned: 'laravel-queue_01' with pid 27
+2024-11-17 06:05:36,847 INFO spawned: 'laravel-queue_02' with pid 28
+2024-11-17 06:05:36,848 INFO spawned: 'laravel-queue_03' with pid 29
+2024-11-17 06:05:36,849 INFO spawned: 'laravel-queue_04' with pid 30
+2024-11-17 06:05:36,850 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-11-17 06:05:36,975 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2024-11-17 06:05:36,976 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2024-11-17 06:05:36,977 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2024-11-17 06:05:36,977 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2024-11-17 06:05:36,978 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2024-11-17 06:05:38,982 INFO spawned: 'laravel-queue_00' with pid 31
+2024-11-17 06:05:38,984 INFO spawned: 'laravel-queue_01' with pid 32
+2024-11-17 06:05:38,986 INFO spawned: 'laravel-queue_02' with pid 33
+2024-11-17 06:05:38,987 INFO spawned: 'laravel-queue_03' with pid 34
+2024-11-17 06:05:38,989 INFO spawned: 'laravel-queue_04' with pid 35
+2024-11-17 06:05:39,111 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2024-11-17 06:05:39,117 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2024-11-17 06:05:39,117 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2024-11-17 06:05:39,120 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2024-11-17 06:05:39,121 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2024-11-17 06:05:42,131 INFO spawned: 'laravel-queue_00' with pid 36
+2024-11-17 06:05:42,134 INFO spawned: 'laravel-queue_01' with pid 37
+2024-11-17 06:05:42,136 INFO spawned: 'laravel-queue_02' with pid 38
+2024-11-17 06:05:42,138 INFO spawned: 'laravel-queue_03' with pid 39
+2024-11-17 06:05:42,141 INFO spawned: 'laravel-queue_04' with pid 40
+2024-11-17 06:05:42,275 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2024-11-17 06:05:42,275 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2024-11-17 06:05:42,276 INFO gave up: laravel-queue_01 entered FATAL state, too many start retries too quickly
+2024-11-17 06:05:42,276 INFO gave up: laravel-queue_02 entered FATAL state, too many start retries too quickly
+2024-11-17 06:05:42,276 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2024-11-17 06:05:42,280 INFO gave up: laravel-queue_00 entered FATAL state, too many start retries too quickly
+2024-11-17 06:05:42,280 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2024-11-17 06:05:42,281 INFO gave up: laravel-queue_03 entered FATAL state, too many start retries too quickly
+2024-11-17 06:05:42,281 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2024-11-17 06:05:43,129 INFO gave up: laravel-queue_04 entered FATAL state, too many start retries too quickly
+2024-11-17 06:05:46,136 INFO success: nginx_00 entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2024-11-17 06:08:08,564 WARN received SIGQUIT indicating exit request
+2024-11-17 06:08:08,565 INFO waiting for nginx_00, php-fpm to die
+2024-11-17 06:08:08,580 INFO stopped: php-fpm (exit status 0)
+2024-11-17 06:08:08,613 INFO stopped: nginx_00 (exit status 0)

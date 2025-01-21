@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Resources;
+
+use App\Models\Module;
+use Auth;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class ModuleResource extends JsonResource
+{
+    /**
+     * Transform the resource into an array.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(Request $request): array
+    {
+        return [
+            'id' => $this->id,
+            'title' => $this->title,
+            'opened_date' => $this->opened_date,
+            'description' => $this->description,
+            'lessons' => LessonResource::collection($this->lessons),
+            'status' => $this->getModuleStatus(),
+            'created_at' => $this->created_at
+        ];
+    }
+
+    public function getModuleStatus(): bool
+    {
+        $user = Auth::user();
+        $module = Module::findOrFail($this->id);
+
+        $status = $user->modules()->where('module_id', $module->id)->first()->pivot->completed ?? false;
+
+        return $status;
+    }
+}

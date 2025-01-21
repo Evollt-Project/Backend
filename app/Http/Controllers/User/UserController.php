@@ -1,0 +1,97 @@
+<?php
+
+namespace App\Http\Controllers\User;
+
+use App\Enums\RoleEnums;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Models\Skill;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+
+class UserController extends Controller
+{
+    public function get(): JsonResponse
+    {
+        $user = Auth::user();
+
+        return response()->json(new UserResource($user), 200);
+    }
+
+    public function skills(): JsonResponse
+    {
+        return response()->json(Skill::all());
+    }
+
+    public function update(Request $request)
+    {
+        $user = Auth::user();
+
+        // Установите все поля в null, если они не присутствуют в запросе
+        foreach ($user->fillable as $field) {
+            if ($request->has($field)) {
+                $user->$field = $request->$field;
+            }
+        }
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            if ($file->isValid()) {
+                $path = $file->store($user->id, 'public');
+                $user->avatar = \Storage::disk('public')->url($path);
+            }
+        }
+
+        $skillIds = json_decode($request->input('skill_ids', '[]'));
+
+        if (!empty($skillIds)) {
+            $skills = Skill::whereIn('id', $skillIds)->get();
+            $user->skills()->sync($skills);
+        }
+
+        $user->save();
+
+        return response()->json(new UserResource($user), 200);
+    }
+
+    public function enums(): JsonResponse
+    {
+        $enums = [
+            'roles' => collect(RoleEnums::cases())
+                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()])
+        ];
+
+        return response()->json($enums);
+    }
+
+    public function changePassword(Request $request): JsonResponse
+    {
+        // Валидация входных данных
+        $validatedData = $request->validate([
+            'old_password' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = Auth::user();
+
+        // Проверка текущего пароля
+        if (!Hash::check($validatedData['old_password'], $user->password)) {
+            return response()->json([
+                'message' => 'Старый пароль написан неверно',
+                'status' => false
+            ], 422);
+        }
+
+        // Обновление пароля
+        $user->password = Hash::make($validatedData['password']);
+        $user->save();
+
+        return response()->json([
+            'message' => 'Пароль успешно изменен',
+            'status' => true
+        ]);
+    }
+}
