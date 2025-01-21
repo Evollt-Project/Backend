@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1\User;
 
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RequisiteRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Requisite;
 use App\Models\Skill;
+use App\Services\User\RequisiteService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -26,11 +29,10 @@ class UserController extends Controller
         return response()->json(Skill::all());
     }
 
-    public function update(Request $request)
+    public function update(Request $request, RequisiteService $requisite)
     {
         $user = Auth::user();
 
-        // Установите все поля в null, если они не присутствуют в запросе
         foreach ($user->fillable as $field) {
             if ($request->has($field)) {
                 $user->$field = $request->$field;
@@ -54,7 +56,26 @@ class UserController extends Controller
 
         $user->save();
 
+        if ($request->requisites) {
+            $this->createOrUpdateRequisites($request, $requisite);
+        }
+
         return response()->json(new UserResource($user), 200);
+    }
+
+    public function createOrUpdateRequisites(Request $request, RequisiteService $requisite)
+    {
+        $request->validate([
+            'requisites.nalog_status' => 'required|integer',
+            'requisites.date_of_birth' => 'date_format:Y-m-d',
+            'requisites.passport' => 'size:11',
+            'requisites.inn' => 'required|string',
+            'requisites.fio' => 'required|string',
+            'requisites.bik' => 'required|string|size:9',
+            'requisites.bank' => 'required|string',
+            'requisites.payment_account' => 'required|string',
+        ]);
+        return $requisite->createOrUpdate($request->requisites);
     }
 
     public function enums(): JsonResponse

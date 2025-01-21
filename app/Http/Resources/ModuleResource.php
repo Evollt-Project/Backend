@@ -3,9 +3,10 @@
 namespace App\Http\Resources;
 
 use App\Models\Module;
-use Auth;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ModuleResource extends JsonResource
 {
@@ -32,7 +33,9 @@ class ModuleResource extends JsonResource
         $user = Auth::user();
         $module = Module::findOrFail($this->id);
 
-        $status = $user->modules()->where('module_id', $module->id)->first()->pivot->completed ?? false;
+        if ($module) {
+            $status = $user->modules()->where('module_id', $module->id)->first()->pivot->completed ?? false;
+        }
 
         return $status;
     }

@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'description' => $this->description,
             'privacy' => $this->privacy == 1 ? true : false,
             'gender' => $this->gender,
+            'requisites' => $this->requisite ? new RequisiteResource($this->requisite) : null,
             'job' => $this->job,
             'balance' => $this->balance,
             'mail_approve' => $this->mail_approve,

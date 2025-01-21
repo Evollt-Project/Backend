@@ -130,4 +130,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class);
     }
+    public function requisite(): HasOne
+    {
+        return $this->hasOne(Requisite::class);
+    }
 }

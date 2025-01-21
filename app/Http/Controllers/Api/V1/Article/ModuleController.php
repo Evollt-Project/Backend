@@ -3,29 +3,50 @@
 namespace App\Http\Controllers\Api\V1\Article;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\EmptyRequest;
 use App\Http\Requests\ModuleRequest;
-use App\Http\Resources\ArticleResource;
 use App\Http\Resources\ModuleResource;
-use App\Models\Article;
 use App\Models\Module;
-use Auth;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ModuleController extends Controller
 {
-    public function get($id)
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
     {
-        if ($id == 'all') {
-            $modules = Module::paginate(10);
-            return ModuleResource::collection($modules);
+        $modules = Module::paginate(10);
+        return ModuleResource::collection($modules);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(ModuleRequest $request)
+    {
+        $data = $request->only(['title', 'description', 'opened_date', 'article_id']);
+
+        if (!empty($data)) {
+            $module = Module::create($data);
         }
 
+        return response()->json(new ModuleResource($module), 200);
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(string $id)
+    {
         return response()->json(new ModuleResource(Module::find($id)));
     }
 
-    public function update(EmptyRequest $request, $id): JsonResponse
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, string $id)
     {
         $module = Module::find($id);
 
@@ -42,7 +63,10 @@ class ModuleController extends Controller
         return response()->json(new ModuleResource($module), 200);
     }
 
-    public function delete($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(string $id)
     {
         $module = Module::find($id);
 
@@ -53,18 +77,6 @@ class ModuleController extends Controller
         $module->delete();
 
         return response()->json(['message' => 'Модуль удален'], 200);
-    }
-
-    public function create(ModuleRequest $request, $id): JsonResponse
-    {
-        $data = $request->only(['title', 'description', 'opened_date']);
-
-        if (!empty($data)) {
-            $data['article_id'] = $id;
-            $module = Module::create($data);
-        }
-
-        return response()->json(new ModuleResource($module), 200);
     }
 
     public function complete($id)
@@ -79,11 +91,10 @@ class ModuleController extends Controller
             $user->modules()->syncWithoutDetaching([$module->id => ['completed' => true]]);
         } catch (\Exception $e) {
             return response()->json([
-                'error' => 'Unable to complete the module. Please try again.'
+                'error' => 'Нельзя законить модуль, пожалуйста, попробуйте снова'
             ], 400);
         }
 
-        // Возвращение обновленного модуля с ресурсом
         return new ModuleResource($module);
     }
 }

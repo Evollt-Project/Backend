@@ -29,43 +29,10 @@ Route::prefix('user')->middleware(['auth:sanctum'])->controller(UserController::
     Route::post('update/password', 'changePassword');
 });
 
-Route::prefix('article')->middleware(['auth:sanctum'])->controller(ArticleController::class)->group(function () {
-    Route::get('get/{id}', 'get');
-    Route::post('create', 'create');
-    Route::put('update/{id}', 'update');
-    Route::delete('delete/{id}', 'delete');
-});
-
-Route::prefix('module')->middleware(['auth:sanctum'])->controller(ModuleController::class)->group(function () {
-    Route::get('get/{id}', 'get');
-    Route::get('complete/{id}', 'complete');
-    Route::post('create/{id}', 'create');
-    Route::put('update/{id}', 'update');
-    Route::delete('delete/{id}', 'delete');
-});
-
-Route::prefix('lesson')->middleware(['auth:sanctum'])->controller(LessonController::class)->group(function () {
-    Route::get('get/{id}', 'get');
-    Route::post('create/{id}', 'create');
-    Route::put('update/{id}', 'update');
-    Route::delete('delete/{id}', 'delete');
-});
-
-Route::resource('category', CategoryController::class);
-Route::resource('catalog', CatalogController::class);
+Route::resource('article', ArticleController::class)->middleware('auth:sanctum');
+Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
+Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
+Route::resource('category', CategoryController::class)->middleware('auth:sanctum');
+Route::resource('catalog', CatalogController::class)->middleware('auth:sanctum');
 
 // TODO: Добавить CRUD уроков
-
-// Route::get('category/get/{id}', [CategoryController::class, 'get']);
-// Route::prefix('category')->middleware(['auth:sanctum'])->controller(CategoryController::class)->group(function () {
-//     Route::post('/create', 'create');
-//     Route::delete('/delete/{id}', 'delete');
-// });
-
-// Route::get('post/get/{id}', [PostController::class, 'get']);
-// Route::prefix('post')->middleware(['auth:sanctum'])->controller(PostController::class)->group(function () {
-//     Route::post('/create', 'create');
-//     Route::put('/update/{id}', 'update');
-//     Route::get('/my', 'my');
-//     Route::delete('/delete/{id}', 'delete');
-// });
