@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\Admin\CatalogController;
-use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Article\ArticleController;
-use App\Http\Controllers\Article\LessonController;
-use App\Http\Controllers\Article\ModuleController;
-use App\Http\Controllers\User\AuthController;
-use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\Api\V1\Admin\CatalogController;
+use App\Http\Controllers\Api\V1\Admin\CategoryController;
+use App\Http\Controllers\Api\V1\Article\ArticleController;
+use App\Http\Controllers\Api\V1\Article\LessonController;
+use App\Http\Controllers\Api\V1\Article\ModuleController;
+use App\Http\Controllers\Api\V1\User\AuthController;
+use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Article;
+namespace App\Http\Controllers\Api\V1\Article;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmptyRequest;
