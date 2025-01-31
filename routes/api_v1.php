@@ -29,10 +29,11 @@ Route::prefix('user')->middleware(['auth:sanctum'])->controller(UserController::
     Route::post('update/password', 'changePassword');
 });
 
-Route::resource('article', ArticleController::class)->middleware('auth:sanctum');
+Route::resource('article', ArticleController::class);
+Route::prefix('articles')->controller(ArticleController::class)->group(function () {
+    Route::get('online', 'online');
+});
 Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
-Route::resource('category', CategoryController::class)->middleware('auth:sanctum');
-Route::resource('catalog', CatalogController::class)->middleware('auth:sanctum');
-
-// TODO: Добавить CRUD уроков
+Route::resource('category', CategoryController::class);
+Route::resource('catalog', CatalogController::class);

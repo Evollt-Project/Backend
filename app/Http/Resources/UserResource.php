@@ -33,7 +33,9 @@ class UserResource extends JsonResource
             'github' => $this->github,
             'email' => $this->email,
             'phone' => $this->phone,
-            'date_of_birth' => $this->date_of_birth
+            'date_of_birth' => $this->date_of_birth,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Http\Resources\ArticleResource;
 use App\Models\Article;
 use App\Models\Category;
 use App\Services\Article\ArticleService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -48,7 +49,11 @@ class ArticleController extends Controller
      */
     public function show(string $id)
     {
-        return response()->json(new ArticleResource(Article::find($id)));
+        $article = Article::find($id);
+        if (!$article) {
+            return response()->json(['error' => 'Курс не найден'], 404);
+        }
+        return response()->json(new ArticleResource($article));
     }
 
     /**
@@ -96,5 +101,36 @@ class ArticleController extends Controller
         $article->delete();
 
         return response()->json(['message' => 'Пост удален'], 200);
+    }
+
+    public function online()
+    {
+        try {
+            $take = 12;
+            $trendArticles = Article::select('articles.*')
+                ->withCount('students as students_count')
+                ->orderBy('students_count', 'desc')
+                ->take($take)
+                ->get();
+
+            $newArticles = Article::orderBy('created_at', 'desc')
+                ->take($take)
+                ->get();
+
+            return response()->json([
+                [
+                    'tab' => "В тренде",
+                    'articles' => ArticleResource::collection($trendArticles)
+                ],
+                [
+                    'tab' => "Новые",
+                    'articles' => ArticleResource::collection($newArticles)
+                ]
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'errors' => 'Не удалось загрузить онлайн курсы'
+            ], 500);
+        }
     }
 }

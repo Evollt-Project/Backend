@@ -57,7 +57,9 @@ class Article extends Model
         'description',
         'content',
         'user_id',
-        'status'
+        'status',
+        'has_certificate',
+        'time'
     ];
 
     public function user(): BelongsTo
