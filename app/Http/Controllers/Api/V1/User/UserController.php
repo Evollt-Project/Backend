@@ -8,6 +8,7 @@ use App\Http\Requests\RequisiteRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Requisite;
 use App\Models\Skill;
+use App\Models\User;
 use App\Services\User\RequisiteService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
@@ -22,6 +23,19 @@ class UserController extends Controller
         $user = Auth::user();
 
         return response()->json(new UserResource($user), 200);
+    }
+
+    public function getById($id): JsonResponse
+    {
+        $user = User::find($id);
+
+        if (!$user || $user->privacy) {
+            return response()->json([
+                'message' => 'Пользователь или не существует или предпочел скрыть свой профиль',
+            ]);
+        }
+
+        return response()->json(new UserResource($user));
     }
 
     public function skills(): JsonResponse
@@ -49,10 +63,8 @@ class UserController extends Controller
 
         $skillIds = json_decode($request->input('skill_ids', '[]'));
 
-        if (!empty($skillIds)) {
-            $skills = Skill::whereIn('id', $skillIds)->get();
-            $user->skills()->sync($skills);
-        }
+        $skills = Skill::whereIn('id', $skillIds)->get();
+        $user->skills()->sync($skills);
 
         $user->save();
 

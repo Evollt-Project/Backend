@@ -28,6 +28,7 @@ Route::prefix('user')->middleware(['auth:sanctum'])->controller(UserController::
     Route::put('update', 'update');
     Route::post('update/password', 'changePassword');
 });
+Route::get('user/get/{id}', [UserController::class, 'getById']);
 
 Route::resource('article', ArticleController::class);
 Route::prefix('articles')->controller(ArticleController::class)->group(function () {
