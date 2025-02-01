@@ -59,7 +59,13 @@ class CatalogController extends Controller
      */
     public function show(string $id): JsonResponse
     {
-        return response()->json(new CatalogResource(Catalog::find($id)));
+        $catalog = Catalog::find($id);
+        if (!$catalog) {
+            response()->json([
+                'error' => "Каталог с таким id не был найден"
+            ]);
+        }
+        return response()->json(new CatalogResource($catalog));
     }
 
     /**

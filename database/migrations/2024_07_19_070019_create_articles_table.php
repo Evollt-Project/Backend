@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->boolean('has_certificate')->default(false);
             $table->integer('level')->default(0);
-            $table->string('time')->nullable();
+            $table->integer('time')->nullable();
             $table->integer('price')->nullable();
             $table->foreignId('user_id')->constrained();
             $table->integer('status')->default(0);

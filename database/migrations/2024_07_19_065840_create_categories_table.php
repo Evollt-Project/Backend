@@ -15,6 +15,7 @@ return new class() extends Migration {
             $table->string('title');
             $table->string('photo')->nullable();
             $table->foreignId('catalog_id')->constrained()->onDelete('cascade');
+            $table->string('color')->default('#3f4fcb')->nullable();
             $table->text('description');
             $table->timestamps();
         });

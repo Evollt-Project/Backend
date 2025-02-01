@@ -18,6 +18,8 @@ class CategoryResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'photo' => $this->photo,
+            'color' => $this->color,
+            'articles_count' => count($this->articles),
             'description' => $this->description,
             'catalog' => $this->catalog,
             'subcategories' => SubcategoryResource::collection($this->subcategories)

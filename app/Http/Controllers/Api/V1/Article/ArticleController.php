@@ -69,7 +69,7 @@ class ArticleController extends Controller
 
         $data = $request->only(['title', 'description', 'content']);
 
-        if ($articleService->isValidStatus($request->status)) {
+        if ($request->has('status') && $articleService->isValidStatus($request->status)) {
             $data['status'] = $request->status;
         }
 
@@ -130,6 +130,27 @@ class ArticleController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'errors' => 'Не удалось загрузить онлайн курсы'
+            ], 500);
+        }
+    }
+    public function big()
+    {
+        try {
+            $take = 12;
+            $bigArticles = Article::select('articles.*')
+                ->orderBy('time', 'desc')
+                ->take($take)
+                ->get();
+
+            return response()->json([
+                [
+                    'tab' => null,
+                    'articles' => ArticleResource::collection($bigArticles)
+                ],
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'errors' => 'Не удалось загрузить большие курсы'
             ], 500);
         }
     }
