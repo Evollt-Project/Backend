@@ -71,6 +71,10 @@ class Article extends Model
     {
         return $this->belongsToMany(Category::class, 'category_article');
     }
+    public function subcategories(): BelongsToMany
+    {
+        return $this->belongsToMany(Subcategory::class, 'subcategory_article');
+    }
 
     public function admins(): BelongsToMany
     {

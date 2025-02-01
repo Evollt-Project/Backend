@@ -2,26 +2,44 @@
 
 namespace App\Http\Controllers\Api\V1\Article;
 
+use App\Enums\ArticleTypeEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
+use App\Http\Resources\UserResource;
 use App\Models\Article;
 use App\Models\Category;
+use App\Models\Subcategory;
+use App\Models\User;
 use App\Services\Article\ArticleService;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class ArticleController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->except(['index', 'show']);
+    }
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, ArticleService $articleService)
     {
-        $articles = Article::paginate(10);
+        $perPage = $request->query('per_page') ?? 10;
+        $articles = $articleService->get($request);
 
-        return ArticleResource::collection($articles);
+        return ArticleResource::collection($articles->paginate($perPage));
+    }
+
+    public function search(Request $request, ArticleService $articleService)
+    {
+        $perPage = $request->query('per_page') ?? 10;
+        $articles = $articleService->get($request);
+
+        return ArticleResource::collection($articles->paginate($perPage));
     }
 
     /**
@@ -36,10 +54,14 @@ class ArticleController extends Controller
 
         // Получаем массив ID категорий из запроса
         $categoryIds = $request->input('category_ids', []);
+        $subcategoryIds = $request->input('subcategory_ids', []);
 
         // Проверяем существование категорий и связываем их с постом
         $categories = Category::whereIn('id', $categoryIds)->get();
         $article->categories()->sync($categories);
+
+        $subcategories = Subcategory::whereIn('id', $subcategoryIds)->get();
+        $article->categories()->sync($subcategories);
 
         return response()->json(new ArticleResource($article), 200);
     }

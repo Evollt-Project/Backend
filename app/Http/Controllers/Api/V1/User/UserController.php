@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1\User;
 
+use App\Enums\ArticleTypeEnums;
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RequisiteRequest;
+use App\Http\Resources\ArticleResource;
 use App\Http\Resources\UserResource;
 use App\Models\Requisite;
 use App\Models\Skill;
@@ -94,6 +96,8 @@ class UserController extends Controller
     {
         $enums = [
             'roles' => collect(RoleEnums::cases())
+                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
+            'article_types' => collect(ArticleTypeEnums::cases())
                 ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()])
         ];
 
@@ -102,7 +106,6 @@ class UserController extends Controller
 
     public function changePassword(Request $request): JsonResponse
     {
-        // Валидация входных данных
         $validatedData = $request->validate([
             'old_password' => 'required|string',
             'password' => 'required|string|min:8|confirmed',
@@ -110,7 +113,6 @@ class UserController extends Controller
 
         $user = Auth::user();
 
-        // Проверка текущего пароля
         if (!Hash::check($validatedData['old_password'], $user->password)) {
             return response()->json([
                 'message' => 'Старый пароль написан неверно',
@@ -118,7 +120,6 @@ class UserController extends Controller
             ], 422);
         }
 
-        // Обновление пароля
         $user->password = Hash::make($validatedData['password']);
         $user->save();
 

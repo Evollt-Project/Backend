@@ -125,6 +125,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Skill::class, 'user_skill');
     }
+    public function passing(): BelongsToMany
+    {
+        return $this->belongsToMany(Article::class, 'article_passing');
+    }
 
     public function city(): BelongsTo
     {
