@@ -121,6 +121,15 @@ class User extends Authenticatable
         return $this->belongsToMany(Module::class, 'module_users')->withPivot('completed')->withTimestamps();
     }
 
+    public function certificates()
+    {
+        return $this->hasMany(Certificate::class, "user_id");
+    }
+    public function certificate_types(): BelongsToMany
+    {
+        return $this->belongsToMany(CertificateType::class);
+    }
+
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(Skill::class, 'user_skill');

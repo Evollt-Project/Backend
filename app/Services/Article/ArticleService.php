@@ -25,7 +25,6 @@ class ArticleService
 
     public function get(Request $request)
     {
-        $type = ArticleTypeEnums::tryFrom((int) $request->query('type'));
         $user = Auth::guard('sanctum')->user();
         $query = Article::query();
 

@@ -16,7 +16,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -58,8 +57,8 @@ class UserController extends Controller
         if ($request->hasFile('avatar')) {
             $file = $request->file('avatar');
             if ($file->isValid()) {
-                $path = $file->store($user->id, 'public');
-                $user->avatar = \Storage::disk('public')->url($path);
+                $path = $file->store('users', 'public');
+                $user->avatar = $path;
             }
         }
 

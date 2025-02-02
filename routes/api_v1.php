@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\V1\Admin\CatalogController;
 use App\Http\Controllers\Api\V1\Admin\CategoryController;
 use App\Http\Controllers\Api\V1\Article\ArticleController;
+use App\Http\Controllers\Api\V1\Article\CertificateController;
+use App\Http\Controllers\Api\V1\Article\CertificateTypeController;
 use App\Http\Controllers\Api\V1\Article\LessonController;
 use App\Http\Controllers\Api\V1\Article\ModuleController;
 use App\Http\Controllers\Api\V1\User\AuthController;
@@ -39,3 +41,5 @@ Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
 Route::resource('category', CategoryController::class);
 Route::resource('catalog', CatalogController::class);
+Route::resource('certificate', CertificateController::class)->middleware(['auth:sanctum']);
+Route::resource('certificate_type', CertificateTypeController::class)->middleware(['auth:sanctum']);

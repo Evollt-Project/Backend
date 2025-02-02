@@ -21,6 +21,7 @@ class ArticleFactory extends Factory
             'title' => $this->faker->title(),
             'description' => $this->faker->text(),
             'content' => $this->faker->text(),
+            'certificate_type_id' => 1,
             'user_id' => $this->faker->numberBetween(1, count(User::all())),
         ];
     }

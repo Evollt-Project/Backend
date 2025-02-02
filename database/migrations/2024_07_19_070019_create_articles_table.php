@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('time')->nullable();
             $table->integer('price')->nullable();
             $table->foreignId('user_id')->constrained();
+            $table->foreignId('certificate_type_id')->constrained();
             $table->integer('status')->default(0);
             $table->timestamps();
         });

@@ -9,11 +9,13 @@ use App\Models\ArticleTeacher;
 use App\Models\Catalog;
 use App\Models\CatalogArticle;
 use App\Models\Category;
+use App\Models\CertificateType;
 use App\Models\Lesson;
 use App\Models\Module;
 use App\Models\Skill;
 use App\Models\Subcategory;
 use App\Models\User;
+use Database\Factories\CertificateTypeFactory;
 use Illuminate\Database\Seeder;
 
 use Faker\Factory as Faker;
@@ -153,6 +155,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         User::factory(10)->create();
+        CertificateType::factory(1)->create();
         Article::factory(10)->create();
         Module::factory(10)->create();
 
