@@ -39,7 +39,11 @@ class ArticleService
                         $query = $user->passing();
                         break;
                     case ArticleTypeEnums::FAVORITES:
-                        return;
+                        $query = $user->favorites();
+                        break;
+                    case ArticleTypeEnums::WANT_TO_PASS:
+                        $query = $user->want_to_pass();
+                        break;
                 }
             }
         }
