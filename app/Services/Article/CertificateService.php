@@ -49,6 +49,10 @@ class CertificateService
     {
         $query = CertificateType::query();
 
+        if ($request->my == 1) {
+            $user = Auth::guard('sanctum')->user();
+            $query = $user->certificate_types();
+        }
 
         if ($request->has('type')) {
             $type = CertificateEnums::tryFrom((int) $request->query('type'));
@@ -57,8 +61,8 @@ class CertificateService
 
         if ($search = $request->query('search')) {
             $query->where('title', 'like', "%{$search}%")
-                ->orWhereHas('article', function ($query) use ($search) {
-                    $query->whereRaw("title LIKE ?", ["%{$search}%"]);
+                ->orWhereHas('user', function ($query) use ($search) {
+                    $query->whereRaw("CONCAT(first_name, ' ', COALESCE(surname, '')) LIKE ?", ["%{$search}%"]);
                 });
         }
 

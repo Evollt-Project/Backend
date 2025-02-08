@@ -125,9 +125,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Certificate::class, "user_id");
     }
-    public function certificate_types(): BelongsToMany
+    public function certificate_types()
     {
-        return $this->belongsToMany(CertificateType::class);
+        return $this->hasMany(CertificateType::class);
     }
 
     public function skills(): BelongsToMany

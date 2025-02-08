@@ -19,6 +19,7 @@ class CertificateTypeFactory extends Factory
         return [
             'path' => 'certificate_types/F4SHcnx858rKzakjAGGJ9pFb2A6aokfhbKTI2kOE.jpg',
             'user_id' => 1,
+            'title' => 'Дефолтный сертификат',
             'title_position' => json_encode([
                 'x' => '111',
                 'y' => '111'

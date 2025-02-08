@@ -25,7 +25,7 @@ class RegisterRequest extends BaseRequest
             'first_name' => 'required|max:40',
             'surname' => 'max:40',
             'last_name' => 'max:40',
-            'email' => 'required|email',
+            'email' => 'required|email|unique:users,email',
             'phone' => 'max:11',
             'password' => 'required|min:8'
         ];

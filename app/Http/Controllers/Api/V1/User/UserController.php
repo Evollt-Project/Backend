@@ -5,10 +5,8 @@ namespace App\Http\Controllers\Api\V1\User;
 use App\Enums\ArticleTypeEnums;
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\RequisiteRequest;
-use App\Http\Resources\ArticleResource;
+use App\Http\Resources\CertificateTypeResource;
 use App\Http\Resources\UserResource;
-use App\Models\Requisite;
 use App\Models\Skill;
 use App\Models\User;
 use App\Services\User\RequisiteService;
@@ -42,6 +40,12 @@ class UserController extends Controller
     public function skills(): JsonResponse
     {
         return response()->json(Skill::all());
+    }
+
+    public function certificateTypes()
+    {
+        $user = Auth::user();
+        return CertificateTypeResource::collection($user->certificate_types()->paginate());
     }
 
     public function update(Request $request, RequisiteService $requisite)
