@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('certificate_types', function (Blueprint $table) {
             $table->id();
             $table->string('path');
+            $table->string('preview_image');
             $table->string('title');
             $table->foreignId('user_id')->constrained();
             $table->integer('state')->default(0);
