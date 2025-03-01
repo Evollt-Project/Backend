@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Article;
 
+use App\Enums\CertificateEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CertificateTypeResource;
 use Intervention\Image\Laravel\Facades\Image;
@@ -39,8 +40,6 @@ class CertificateTypeController extends Controller
                 $certificateType->$field = $request->$field;
             }
         }
-        $certificateType->state = 0;
-        $certificateType->user_id = $user->id;
 
         if ($request->hasFile('path')) {
             $file = $request->file('path');
@@ -56,6 +55,9 @@ class CertificateTypeController extends Controller
                 }
             }
         }
+
+        $certificateType->state = CertificateEnums::MODERATION;
+        $certificateType->user_id = $user->id;
 
         $certificateType->save();
 

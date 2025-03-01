@@ -53,3 +53,109 @@
 2024-11-17 06:08:08,565 INFO waiting for nginx_00, php-fpm to die
 2024-11-17 06:08:08,580 INFO stopped: php-fpm (exit status 0)
 2024-11-17 06:08:08,613 INFO stopped: nginx_00 (exit status 0)
+2025-02-18 06:58:18,095 INFO Set uid to user 0 succeeded
+2025-02-18 06:58:18,103 INFO supervisord started with pid 1
+2025-02-18 06:58:19,108 INFO spawned: 'laravel-queue_00' with pid 6
+2025-02-18 06:58:19,110 INFO spawned: 'laravel-queue_01' with pid 7
+2025-02-18 06:58:19,111 INFO spawned: 'laravel-queue_02' with pid 8
+2025-02-18 06:58:19,112 INFO spawned: 'laravel-queue_03' with pid 9
+2025-02-18 06:58:19,114 INFO spawned: 'laravel-queue_04' with pid 10
+2025-02-18 06:58:19,116 INFO spawned: 'nginx_00' with pid 11
+2025-02-18 06:58:19,119 INFO spawned: 'php-fpm' with pid 12
+2025-02-18 06:58:19,275 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-18 06:58:19,311 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-18 06:58:19,315 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-18 06:58:19,318 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-18 06:58:19,336 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-18 06:58:20,395 INFO spawned: 'laravel-queue_00' with pid 25
+2025-02-18 06:58:20,397 INFO spawned: 'laravel-queue_01' with pid 26
+2025-02-18 06:58:20,398 INFO spawned: 'laravel-queue_02' with pid 27
+2025-02-18 06:58:20,399 INFO spawned: 'laravel-queue_03' with pid 28
+2025-02-18 06:58:20,400 INFO spawned: 'laravel-queue_04' with pid 29
+2025-02-18 06:58:20,401 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-02-18 06:58:20,521 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-18 06:58:20,522 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-18 06:58:20,522 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-18 06:58:20,524 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-18 06:58:20,524 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-18 06:58:22,534 INFO spawned: 'laravel-queue_00' with pid 30
+2025-02-18 06:58:22,536 INFO spawned: 'laravel-queue_01' with pid 31
+2025-02-18 06:58:22,539 INFO spawned: 'laravel-queue_02' with pid 32
+2025-02-18 06:58:22,541 INFO spawned: 'laravel-queue_03' with pid 33
+2025-02-18 06:58:22,544 INFO spawned: 'laravel-queue_04' with pid 34
+2025-02-18 06:58:22,672 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-18 06:58:22,673 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-18 06:58:22,673 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-18 06:58:22,675 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-18 06:58:22,677 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-18 06:58:25,691 INFO spawned: 'laravel-queue_00' with pid 35
+2025-02-18 06:58:25,694 INFO spawned: 'laravel-queue_01' with pid 36
+2025-02-18 06:58:25,695 INFO spawned: 'laravel-queue_02' with pid 37
+2025-02-18 06:58:25,696 INFO spawned: 'laravel-queue_03' with pid 38
+2025-02-18 06:58:25,697 INFO spawned: 'laravel-queue_04' with pid 39
+2025-02-18 06:58:25,815 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-18 06:58:25,816 INFO gave up: laravel-queue_01 entered FATAL state, too many start retries too quickly
+2025-02-18 06:58:25,816 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-18 06:58:25,816 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-18 06:58:25,817 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-18 06:58:25,817 INFO gave up: laravel-queue_00 entered FATAL state, too many start retries too quickly
+2025-02-18 06:58:25,817 INFO gave up: laravel-queue_02 entered FATAL state, too many start retries too quickly
+2025-02-18 06:58:25,817 INFO gave up: laravel-queue_03 entered FATAL state, too many start retries too quickly
+2025-02-18 06:58:25,819 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-18 06:58:26,821 INFO gave up: laravel-queue_04 entered FATAL state, too many start retries too quickly
+2025-02-18 06:58:29,829 INFO success: nginx_00 entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2025-02-18 07:00:34,604 WARN received SIGQUIT indicating exit request
+2025-02-18 07:00:34,605 INFO waiting for nginx_00, php-fpm to die
+2025-02-18 07:00:34,620 INFO stopped: php-fpm (exit status 0)
+2025-02-18 07:00:34,664 INFO stopped: nginx_00 (exit status 0)
+2025-02-28 18:16:16,431 INFO Set uid to user 0 succeeded
+2025-02-28 18:16:16,441 INFO supervisord started with pid 1
+2025-02-28 18:16:17,446 INFO spawned: 'laravel-queue_00' with pid 7
+2025-02-28 18:16:17,448 INFO spawned: 'laravel-queue_01' with pid 8
+2025-02-28 18:16:17,449 INFO spawned: 'laravel-queue_02' with pid 9
+2025-02-28 18:16:17,451 INFO spawned: 'laravel-queue_03' with pid 10
+2025-02-28 18:16:17,452 INFO spawned: 'laravel-queue_04' with pid 11
+2025-02-28 18:16:17,454 INFO spawned: 'nginx_00' with pid 12
+2025-02-28 18:16:17,457 INFO spawned: 'php-fpm' with pid 13
+2025-02-28 18:16:17,590 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-28 18:16:17,590 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-28 18:16:17,598 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-28 18:16:17,602 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-28 18:16:17,605 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-28 18:16:18,645 INFO spawned: 'laravel-queue_00' with pid 26
+2025-02-28 18:16:18,647 INFO spawned: 'laravel-queue_01' with pid 27
+2025-02-28 18:16:18,649 INFO spawned: 'laravel-queue_02' with pid 28
+2025-02-28 18:16:18,651 INFO spawned: 'laravel-queue_03' with pid 29
+2025-02-28 18:16:18,654 INFO spawned: 'laravel-queue_04' with pid 30
+2025-02-28 18:16:18,654 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2025-02-28 18:16:18,792 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-28 18:16:18,793 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-28 18:16:18,794 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-28 18:16:18,794 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-28 18:16:18,795 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-28 18:16:20,800 INFO spawned: 'laravel-queue_00' with pid 31
+2025-02-28 18:16:20,801 INFO spawned: 'laravel-queue_01' with pid 32
+2025-02-28 18:16:20,802 INFO spawned: 'laravel-queue_02' with pid 33
+2025-02-28 18:16:20,803 INFO spawned: 'laravel-queue_03' with pid 34
+2025-02-28 18:16:20,804 INFO spawned: 'laravel-queue_04' with pid 35
+2025-02-28 18:16:20,933 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-28 18:16:20,933 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-28 18:16:20,933 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-28 18:16:20,934 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-28 18:16:20,934 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-28 18:16:23,963 INFO spawned: 'laravel-queue_00' with pid 36
+2025-02-28 18:16:23,966 INFO spawned: 'laravel-queue_01' with pid 37
+2025-02-28 18:16:23,969 INFO spawned: 'laravel-queue_02' with pid 38
+2025-02-28 18:16:23,971 INFO spawned: 'laravel-queue_03' with pid 39
+2025-02-28 18:16:23,972 INFO spawned: 'laravel-queue_04' with pid 40
+2025-02-28 18:16:24,103 WARN exited: laravel-queue_01 (exit status 1; not expected)
+2025-02-28 18:16:24,103 WARN exited: laravel-queue_00 (exit status 1; not expected)
+2025-02-28 18:16:24,103 INFO gave up: laravel-queue_00 entered FATAL state, too many start retries too quickly
+2025-02-28 18:16:24,103 INFO gave up: laravel-queue_01 entered FATAL state, too many start retries too quickly
+2025-02-28 18:16:24,104 WARN exited: laravel-queue_03 (exit status 1; not expected)
+2025-02-28 18:16:24,105 WARN exited: laravel-queue_02 (exit status 1; not expected)
+2025-02-28 18:16:24,105 WARN exited: laravel-queue_04 (exit status 1; not expected)
+2025-02-28 18:16:24,105 INFO gave up: laravel-queue_02 entered FATAL state, too many start retries too quickly
+2025-02-28 18:16:24,105 INFO gave up: laravel-queue_03 entered FATAL state, too many start retries too quickly
+2025-02-28 18:16:24,105 INFO gave up: laravel-queue_04 entered FATAL state, too many start retries too quickly
+2025-02-28 18:16:28,115 INFO success: nginx_00 entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
