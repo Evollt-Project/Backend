@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\User;
 
 use App\Enums\ArticleTypeEnums;
+use App\Enums\CertificateEnums;
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CertificateTypeResource;
@@ -101,6 +102,8 @@ class UserController extends Controller
             'roles' => collect(RoleEnums::cases())
                 ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
             'article_types' => collect(ArticleTypeEnums::cases())
+                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
+            'certificate_types' => collect(CertificateEnums::cases())
                 ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()])
         ];
 
