@@ -24,8 +24,7 @@ class ArticleRequest extends BaseRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|min:8',
-            'content' => 'required'
+            'title' => 'required|min:8|max:64',
         ];
     }
 

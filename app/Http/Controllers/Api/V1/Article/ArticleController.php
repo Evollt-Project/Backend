@@ -47,7 +47,7 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
-        $data = $request->only(['title', 'description', 'content']);
+        $data = $request->only(['title']);
         $data['user_id'] = Auth::id();
 
         $article = Article::create($data);

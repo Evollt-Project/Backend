@@ -159,3 +159,7 @@
 2025-02-28 18:16:24,105 INFO gave up: laravel-queue_03 entered FATAL state, too many start retries too quickly
 2025-02-28 18:16:24,105 INFO gave up: laravel-queue_04 entered FATAL state, too many start retries too quickly
 2025-02-28 18:16:28,115 INFO success: nginx_00 entered RUNNING state, process has stayed up for > than 10 seconds (startsecs)
+2025-03-02 15:04:45,337 WARN received SIGQUIT indicating exit request
+2025-03-02 15:04:45,354 INFO waiting for nginx_00, php-fpm to die
+2025-03-02 15:04:45,480 INFO stopped: php-fpm (exit status 0)
+2025-03-02 15:04:45,544 INFO stopped: nginx_00 (exit status 0)

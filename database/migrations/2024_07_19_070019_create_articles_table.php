@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-            $table->text('content');
+            $table->text('description')->nullable();
+            $table->text('content')->nullable();
             $table->string('avatar')->nullable();
             $table->boolean('has_certificate')->default(false);
             $table->integer('level')->default(0);
             $table->integer('time')->nullable();
             $table->integer('price')->nullable();
             $table->foreignId('user_id')->constrained();
-            $table->foreignId('certificate_type_id')->constrained();
+            $table->foreignId('certificate_type_id')->default(1)->constrained();
             $table->integer('status')->default(0);
             $table->timestamps();
         });
