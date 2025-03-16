@@ -7,6 +7,7 @@ use App\Http\Requests\LessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -24,7 +25,9 @@ class LessonController extends Controller
      */
     public function store(LessonRequest $request)
     {
-        $data = $request->only(['title', 'content', 'module_id']);
+        $data = array_merge([
+            'user_id' => Auth::id()
+        ], $request->only(['title', 'content', 'module_id']));
 
         if (!empty($data)) {
             $lesson = Lesson::create($data);

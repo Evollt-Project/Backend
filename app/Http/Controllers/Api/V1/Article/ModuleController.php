@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Article;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ModuleRequest;
 use App\Http\Resources\ModuleResource;
+use App\Models\Article;
 use App\Models\Module;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,10 +16,14 @@ class ModuleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $modules = Module::paginate(10);
-        return ModuleResource::collection($modules);
+        $article = Article::find($request->article_id);
+        if (!$article)
+            return response()->json([
+                'error' => "Такой курс не найден"
+            ]);
+        return response()->json(ModuleResource::collection($article->modules));
     }
 
     /**
@@ -27,6 +32,10 @@ class ModuleController extends Controller
     public function store(ModuleRequest $request)
     {
         $data = $request->only(['title', 'description', 'opened_date', 'article_id']);
+
+        if(!isset($data['description'])) {
+            $data['description'] = '';
+        }
 
         if (!empty($data)) {
             $module = Module::create($data);

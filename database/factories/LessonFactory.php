@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Module;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +21,8 @@ class LessonFactory extends Factory
         return [
             'title' => $this->faker->title(),
             'content' => $this->faker->text(),
-            'module_id' => $this->faker->numberBetween(1, count(Module::all()))
+            'module_id' => $this->faker->numberBetween(1, count(Module::all())),
+            'user_id' => $this->faker->numberBetween(1, count(User::all()))
         ];
     }
 }
