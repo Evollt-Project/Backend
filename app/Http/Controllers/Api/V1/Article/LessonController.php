@@ -62,9 +62,14 @@ class LessonController extends Controller
 
         $data = $request->only(['title', 'content', 'module_id']);
 
-        if (!empty($data)) {
-            $lesson->update($data);
+        foreach ($lesson->fillable as $field) {
+            if (isset($data[$field])) {
+                $lesson->$field = $data[$field];
+            }
         }
+
+        $lesson->save();
+
 
         return response()->json(new LessonResource($lesson), 200);
     }
