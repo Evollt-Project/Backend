@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use App\Models\Module;
+use App\Services\Lesson\ReorderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,6 +33,8 @@ class LessonController extends Controller
         ], $request->only(['title', 'content', 'module_id']));
 
         if (!empty($data)) {
+            $lessons = Module::find($data['module_id'])->lessons;
+            $data['position'] = count($lessons);
             $lesson = Lesson::create($data);
         }
 
@@ -78,5 +83,12 @@ class LessonController extends Controller
         $lesson->delete();
 
         return response()->json(['message' => 'Урок удален'], 200);
+    }
+
+    public function reorder(Request $request, ReorderService $reorderService): JsonResponse
+    {
+        $reorderedLessons = $reorderService->reorder($request->lesson_ids);
+
+        return response()->json(LessonResource::collection($reorderedLessons));
     }
 }

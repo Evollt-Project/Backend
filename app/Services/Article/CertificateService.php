@@ -8,6 +8,7 @@ use App\Enums\CertificateEnums;
 use App\Models\Article;
 use App\Models\Certificate;
 use App\Models\CertificateType;
+use App\Services\Base\Service;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,7 @@ use Storage;
 use Str;
 use ValueError;
 
-class CertificateService
+class CertificateService extends Service
 {
     /**
      * Undocumented function

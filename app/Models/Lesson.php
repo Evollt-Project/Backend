@@ -32,6 +32,7 @@ class Lesson extends Model
 
     protected $fillable = [
         'title',
+        'position',
         'content',
         'module_id',
         'user_id'

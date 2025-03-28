@@ -37,8 +37,11 @@ Route::prefix('articles')->controller(ArticleController::class)->group(function 
     Route::get('online', 'online');
     Route::get('big', 'big');
 });
-Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
+
+Route::put('lesson/reorder', [LessonController::class, 'reorder'])->middleware('auth:sanctum');
 Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
+
+Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('category', CategoryController::class);
 Route::resource('catalog', CatalogController::class);
 Route::resource('certificate', CertificateController::class)->middleware(['auth:sanctum']);

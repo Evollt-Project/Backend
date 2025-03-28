@@ -5,12 +5,13 @@ namespace App\Services\Article;
 use App\Enums\ArticleStatusEnums;
 use App\Enums\ArticleTypeEnums;
 use App\Models\Article;
+use App\Services\Base\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
 use ValueError;
 
-class ArticleService
+class ArticleService extends Service
 {
     public function isValidStatus(int $status): bool
     {
