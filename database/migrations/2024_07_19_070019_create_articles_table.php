@@ -14,11 +14,18 @@ return new class extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description')->nullable();
-            $table->text('content')->nullable();
+            $table->text('short_content')->nullable();
+            $table->text('what_learn_content')->nullable();
+            $table->text('about_content')->nullable();
+            $table->text('for_who_content')->nullable();
+            $table->text('start_content')->nullable();
+            $table->text('how_learn_content')->nullable();
+            $table->text('what_give_content')->nullable();
+            $table->integer('recommended_load')->default(1);
             $table->string('avatar')->nullable();
             $table->boolean('has_certificate')->default(false);
-            $table->integer('level')->default(0);
+            $table->foreignId('level_id')->default(1)->constrained();
+            $table->foreignId('language_id')->default(1)->constrained();
             $table->integer('time')->nullable();
             $table->integer('price')->nullable();
             $table->foreignId('user_id')->constrained();

@@ -7,7 +7,9 @@ use App\Enums\CertificateEnums;
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CertificateTypeResource;
+use App\Http\Resources\LanguageResource;
 use App\Http\Resources\UserResource;
+use App\Models\Language;
 use App\Models\Skill;
 use App\Models\User;
 use App\Services\User\RequisiteService;
@@ -104,7 +106,8 @@ class UserController extends Controller
             'article_types' => collect(ArticleTypeEnums::cases())
                 ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
             'certificate_types' => collect(CertificateEnums::cases())
-                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()])
+                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
+            'languages' => LanguageResource::collection(Language::all())
         ];
 
         return response()->json($enums);

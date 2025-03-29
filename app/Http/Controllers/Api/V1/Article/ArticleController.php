@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Article;
 
 use App\Enums\ArticleTypeEnums;
+use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
@@ -47,8 +48,9 @@ class ArticleController extends Controller
      */
     public function store(ArticleRequest $request)
     {
+        $user = Auth::user();
         $data = $request->only(['title']);
-        $data['user_id'] = Auth::id();
+        $data['user_id'] = $user->id;
 
         $article = Article::create($data);
 
@@ -62,6 +64,12 @@ class ArticleController extends Controller
 
         $subcategories = Subcategory::whereIn('id', $subcategoryIds)->get();
         $article->categories()->sync($subcategories);
+
+        if($user['role'] < RoleEnums::TEACHER->value) {
+            Log::info($user['role']);
+            $user['role'] = RoleEnums::TEACHER->value;
+            $user->save();
+        }
 
         return response()->json(new ArticleResource($article), 200);
     }
@@ -83,6 +91,7 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id, ArticleService $articleService)
     {
+        // TODO: Доделать обновление курса (используются другие поля)
         $article = Article::find($id);
 
         if (!$article) {

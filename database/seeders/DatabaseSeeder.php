@@ -50,7 +50,7 @@ class DatabaseSeeder extends Seeder
             'title' => 'Педагогика',
             'photo' => 'https://distant-college.ru/uplfile/news_image/unnamed.png'
         ],
-        // TODO: Добавить фотографии этим облостям
+        // TODO: Добавить фотографии этим областям
         // [
         //     'title' => 'Учебные и академические дисциплины',
         //     'photo' => 'https://distant-college.ru/uplfile/news_image/unnamed.png'
@@ -152,6 +152,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             LanguageSeeder::class,
+            LevelSeeder::class
         ]);
 
         User::factory(10)->create();
