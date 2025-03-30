@@ -51,6 +51,8 @@ class ArticleController extends Controller
         $user = Auth::user();
         $data = $request->only(['title']);
         $data['user_id'] = $user->id;
+        $data['level_id'] = 1;
+        $data['language_id'] = 1;
 
         $article = Article::create($data);
 
