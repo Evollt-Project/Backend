@@ -109,7 +109,7 @@ class CertificateService extends Service
     {
         switch ($type) {
             case 'logo':
-                return 'Evollt School';
+                return 'Evollt Academy';
             case 'date':
                 return '01.01.2025';
             case 'title':
