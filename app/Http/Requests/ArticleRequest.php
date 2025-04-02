@@ -2,10 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Validation\ValidationException;
-
 class ArticleRequest extends BaseRequest
 {
     /**
@@ -27,11 +23,4 @@ class ArticleRequest extends BaseRequest
             'title' => 'required|min:8|max:64',
         ];
     }
-
-    // protected function failedValidation(Validator $validator): void
-    // {
-    //     throw new ValidationException($validator, response()->json([
-    //         'errors' => $validator->errors()
-    //     ], 422));
-    // }
 }
