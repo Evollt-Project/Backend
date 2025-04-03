@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1\Article;
 
-use App\Enums\ArticleTypeEnums;
 use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
-use App\Http\Resources\UserResource;
 use App\Models\Article;
+use App\Models\ArticleAdmin;
+use App\Models\ArticleTeacher;
 use App\Models\Category;
 use App\Models\Subcategory;
-use App\Models\User;
 use App\Services\Article\ArticleService;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -24,6 +22,7 @@ class ArticleController extends Controller
     {
         $this->middleware('auth:sanctum')->except(['index', 'show', 'big', 'online']);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -67,7 +66,17 @@ class ArticleController extends Controller
         $subcategories = Subcategory::whereIn('id', $subcategoryIds)->get();
         $article->categories()->sync($subcategories);
 
-        if($user['role'] < RoleEnums::TEACHER->value) {
+        ArticleTeacher::create([
+            'article_id' => $article->id,
+            'user_id' => $user->id,
+        ]);
+
+        ArticleAdmin::create([
+            'article_id' => $article->id,
+            'user_id' => $user->id,
+        ]);
+
+        if ($user['role'] < RoleEnums::TEACHER->value) {
             Log::info($user['role']);
             $user['role'] = RoleEnums::TEACHER->value;
             $user->save();
@@ -166,6 +175,7 @@ class ArticleController extends Controller
             ], 500);
         }
     }
+
     public function big()
     {
         try {

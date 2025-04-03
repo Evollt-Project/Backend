@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property int $user_id
@@ -27,4 +27,9 @@ use Illuminate\Database\Eloquent\Model;
 class ArticleAdmin extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'article_id',
+        'user_id',
+    ];
 }
