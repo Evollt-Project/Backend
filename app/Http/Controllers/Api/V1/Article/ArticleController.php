@@ -6,12 +6,14 @@ use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
+use App\Jobs\Article\CreateJob as ArticleCreateJob;
 use App\Models\Article;
 use App\Models\ArticleAdmin;
 use App\Models\ArticleTeacher;
 use App\Models\Category;
 use App\Models\Subcategory;
 use App\Services\Article\ArticleService;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Log;
@@ -77,10 +79,10 @@ class ArticleController extends Controller
         ]);
 
         if ($user['role'] < RoleEnums::TEACHER->value) {
-            Log::info($user['role']);
-            $user['role'] = RoleEnums::TEACHER->value;
-            $user->save();
+            $user->update(['role' => RoleEnums::TEACHER->value]);
         }
+
+        ArticleCreateJob::dispatch($user, $article);
 
         return response()->json(new ArticleResource($article), 200);
     }
@@ -104,15 +106,48 @@ class ArticleController extends Controller
     {
         // TODO: Доделать обновление курса (используются другие поля)
         $article = Article::find($id);
+        $user = Auth::user();
 
         if (!$article) {
             return response()->json(['error' => 'Курс не найден'], 404);
         }
 
-        $data = $request->only(['title', 'description', 'content']);
+        $data = $request->only(
+            [
+                'title',
+                'avatar',
+                'short_content',
+                'what_learn_content',
+                'about_content',
+                'for_who_content',
+                'start_content',
+                'how_learn_content',
+                'what_give_content',
+                'recommended_load',
+                'level_id',
+                'language_id',
+                'user_id'
+            ]
+        );
 
-        if ($request->has('status') && $articleService->isValidStatus($request->status)) {
+        if (
+            $request->has('status') &&
+            $articleService->isValidStatus($request->status) &&
+            $user->role == RoleEnums::ADMIN
+        ) {
             $data['status'] = $request->status;
+        } else {
+            return response()->json([
+                'message' => 'Статус имеет невалидное значение, либо пользователь не имеет права менять статус курса'
+            ]);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            if ($file->isValid()) {
+                $path = $file->store('articles', 'public');
+                $article->avatar = $path;
+            }
         }
 
         if (!empty($data)) {
@@ -169,7 +204,8 @@ class ArticleController extends Controller
                     'articles' => ArticleResource::collection($newArticles)
                 ]
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'errors' => 'Не удалось загрузить онлайн курсы'
             ], 500);
@@ -191,7 +227,8 @@ class ArticleController extends Controller
                     'articles' => ArticleResource::collection($bigArticles)
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'errors' => 'Не удалось загрузить большие курсы'
             ], 500);
