@@ -8,6 +8,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Services\Sms\SmsRuService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -26,12 +27,14 @@ class AuthController extends Controller
 
         $user->save();
 
+        (new SmsRuService([$request['phone']], 'бла-бла-бла'))->send();
+        
         return response()->json(
             array_merge(
-                (new UserResource($user))->toArray(request()), // Преобразуем ресурс в массив
-                [
-                    'token' => $user->createToken('API TOKEN')->plainTextToken // Добавляем токен
-                ]
+                (new UserResource($user))->toArray(request()),
+//                [
+//                    'token' => $user->createToken('API TOKEN')->plainTextToken // Добавляем токен
+//                ]
             ),
             200
         );

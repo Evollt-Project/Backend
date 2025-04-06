@@ -2,8 +2,6 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
-
 class RegisterRequest extends BaseRequest
 {
     /**
@@ -26,7 +24,7 @@ class RegisterRequest extends BaseRequest
             'surname' => 'max:40',
             'last_name' => 'max:40',
             'email' => 'required|email|unique:users,email',
-            'phone' => 'max:11',
+            'phone' => 'max:11|unique:users,phone',
             'password' => 'required|min:8'
         ];
     }
