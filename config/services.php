@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'app' => [
+        'name' => env('APP_NAME'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

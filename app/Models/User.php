@@ -6,7 +6,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -126,6 +125,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Certificate::class, "user_id");
     }
+
     public function certificate_types()
     {
         return $this->hasMany(CertificateType::class);
@@ -155,6 +155,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class);
     }
+
     public function requisite(): HasOne
     {
         return $this->hasOne(Requisite::class);

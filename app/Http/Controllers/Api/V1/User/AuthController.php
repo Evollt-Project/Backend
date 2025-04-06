@@ -7,8 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\User\SendPhoneVerificationCodeJob;
 use App\Models\User;
-use App\Services\Sms\SmsRuService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
@@ -27,8 +27,8 @@ class AuthController extends Controller
 
         $user->save();
 
-        (new SmsRuService([$request['phone']], 'бла-бла-бла'))->send();
-        
+        SendPhoneVerificationCodeJob::dispatch($user);
+
         return response()->json(
             array_merge(
                 (new UserResource($user))->toArray(request()),

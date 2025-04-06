@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Article\CertificateController;
 use App\Http\Controllers\Api\V1\Article\CertificateTypeController;
 use App\Http\Controllers\Api\V1\Article\LessonController;
 use App\Http\Controllers\Api\V1\Article\ModuleController;
+use App\Http\Controllers\Api\V1\GeneralController;
 use App\Http\Controllers\Api\V1\User\AuthController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
@@ -16,7 +17,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('enums', [UserController::class, 'enums']);
+Route::get('check', [GeneralController::class, 'check']);
+Route::get('enums', [GeneralController::class, 'enums']);
 
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('register', 'register');

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -26,10 +25,13 @@ return new class extends Migration
             $table->string('github')->nullable();
             $table->string('vk')->nullable();
             $table->string('email')->unique();
+            $table->boolean('email_verified')->default(false);
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->unique()->nullable();
+            $table->boolean('phone_verified')->default(false);
+            $table->timestamp('phone_verified_at')->nullable();
             $table->boolean('privacy')->default(false);
             $table->date('date_of_birth')->nullable()->default(null);
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
@@ -49,6 +51,25 @@ return new class extends Migration
             $table->longText('payload');
             $table->integer('last_activity')->index();
         });
+
+        Schema::create('phone_verification_codes', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->ipAddress('ip');
+            $table->string('phone');
+            $table->string('code');
+            $table->timestamp('expired_at')->nullable();
+
+            $table->timestamps();
+        });
+
+        Schema::create('confirmed_phones', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->ipAddress('ip');
+            $table->string('phone');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -59,5 +80,7 @@ return new class extends Migration
         Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('phone_verification_codes');
+        Schema::dropIfExists('confirmed_phones');
     }
 };
