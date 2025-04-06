@@ -17,12 +17,14 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('check', [GeneralController::class, 'check']);
 Route::get('enums', [GeneralController::class, 'enums']);
 
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
+    Route::post('step/code', 'code');
+    Route::get('step/code-check', 'codeCheck');
+    Route::get('step/email-check-exists', 'emailCheckExists');
     Route::get('logout', 'logout')->middleware(['auth:sanctum']);
 });
 

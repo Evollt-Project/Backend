@@ -28,8 +28,8 @@ return new class extends Migration {
             $table->boolean('email_verified')->default(false);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('phone')->unique()->nullable();
-            $table->boolean('phone_verified')->default(false);
-            $table->timestamp('phone_verified_at')->nullable();
+            $table->boolean('phone_verified')->default(true);
+            $table->timestamp('phone_verified_at')->nullable()->default(now());
             $table->boolean('privacy')->default(false);
             $table->date('date_of_birth')->nullable()->default(null);
             $table->string('password');
@@ -65,7 +65,7 @@ return new class extends Migration {
 
         Schema::create('confirmed_phones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->ipAddress('ip');
             $table->string('phone');
             $table->timestamps();

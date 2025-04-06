@@ -8,7 +8,7 @@ class ConfirmedPhone extends Model
 {
     protected $fillable = [
         'phone',
-        'id',
+        'ip',
         'user_id'
     ];
 }

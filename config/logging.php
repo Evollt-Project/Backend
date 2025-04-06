@@ -65,9 +65,15 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'article_create_jobs' => [
+        'article_create' => [
             'driver' => 'single',
-            'path' => storage_path('logs/article/create_jobs.log'),
+            'path' => storage_path('logs/article/create.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+        ],
+
+        'register_sms_create' => [
+            'driver' => 'single',
+            'path' => storage_path('logs/register/sms_create.log'),
             'level' => env('LOG_LEVEL', 'debug'),
         ],
 

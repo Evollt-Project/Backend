@@ -43,12 +43,12 @@ class CreateJob implements ShouldQueue
         try {
             Mail::to($this->user->email)->send(new CreateArticleMail());
 
-            Log::channel('article_create_jobs')->info(
+            Log::channel('article_create')->info(
                 'Сообщение о создании поста отправлено пользователю',
                 $log
             );
         } catch (\Exception $e) {
-            Log::channel('article_create_jobs')->error(
+            Log::channel('article_create')->error(
                 'Ошибка при отправке сообщения о создании поста пользователю',
                 array_merge($log, ['error' => $e->getMessage(), 'stack' => $e->getTraceAsString()])
             );

@@ -16,9 +16,8 @@ class SendPhoneVerificationCodeJob implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(public User|Authenticatable $user)
+    public function __construct(public string $phone = '', public User|Authenticatable|null $user = null)
     {
-        //
     }
 
     /**
@@ -26,14 +25,21 @@ class SendPhoneVerificationCodeJob implements ShouldQueue
      */
     public function handle(): void
     {
-        $smsService = new SmsRuService($this->user);
+        try {
+            $smsService = new SmsRuService();
 
-        $code = $smsService->createVerificationCode($this->user);
-
-        Log::info($code->ip);
-
-        $smsService->send([$code->phone],
-            'Ваш проверочный код ' . config('app.name') . ' ' . $code->code,
-            $code->ip);
+            $code = $smsService->createVerificationCode($this->phone);
+            
+            $smsService->send(
+                [$code->phone],
+                'Ваш проверочный код ' . config('app.name') . ' ' . $code->code,
+                $code->ip
+            );
+        } catch (\Exception $e) {
+            Log::channel('register_sms_create')->error('Ошибка при отправке SMS: ' . $e->getMessage(), [
+                'user_id' => $this->user->id ?? null,
+                'exception' => $e
+            ]);
+        }
     }
 }

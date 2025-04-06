@@ -15,10 +15,8 @@ use App\Models\Module;
 use App\Models\Skill;
 use App\Models\Subcategory;
 use App\Models\User;
-use Database\Factories\CertificateTypeFactory;
-use Illuminate\Database\Seeder;
-
 use Faker\Factory as Faker;
+use Illuminate\Database\Seeder;
 
 
 class DatabaseSeeder extends Seeder
@@ -50,35 +48,6 @@ class DatabaseSeeder extends Seeder
             'title' => 'Педагогика',
             'photo' => 'https://distant-college.ru/uplfile/news_image/unnamed.png'
         ],
-        // TODO: Добавить фотографии этим областям
-        // [
-        //     'title' => 'Учебные и академические дисциплины',
-        //     'photo' => 'https://distant-college.ru/uplfile/news_image/unnamed.png'
-        // ],
-        // [
-        //     'title' => 'Архитектура и инженерное дело',
-
-        // ],
-        // [
-        //     'title' => 'Технологии и инновации',
-
-        // ],
-        // [
-        //     'title' => 'Досуг',
-
-        // ],
-        // [
-        //     'title' => 'Здоровье и безопасность',
-
-        // ],
-        // [
-        //     'title' => 'Общественная деятельность',
-
-        // ],
-        // [
-        //     'title' => 'Создание курсов на Stepik',
-
-        // ],
     ];
 
     private $categories = [
@@ -145,6 +114,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->faker = Faker::create();
     }
+
     /**
      * Seed the application's database.
      */

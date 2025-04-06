@@ -10,10 +10,7 @@ use App\Http\Resources\LanguageResource;
 use App\Http\Resources\LevelResource;
 use App\Models\Language;
 use App\Models\Level;
-use App\Models\User;
-use App\Services\Sms\SmsRuService;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class GeneralController extends Controller
 {
@@ -33,18 +30,5 @@ class GeneralController extends Controller
         return response()->json($enums);
     }
 
-    public function check(Request $request): JsonResponse
-    {
-        $user = User::find($request->user_id);
-        if (!$user) {
-            return response()->json(['message' => 'Пользователь не найден'], 404);
-        }
-        $smsService = new SmsRuService();
-        $smsService->checkVerificationCode($user, $request->code);
-
-        return response()->json([
-            'status' => true,
-        ], 200);
-    }
 
 }

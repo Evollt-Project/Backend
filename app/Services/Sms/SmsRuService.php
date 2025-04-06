@@ -38,11 +38,12 @@ class SmsRuService extends SmsService
 
             $data = json_decode($response->getBody(), true);
 
-            Log::info(json_encode($data));
-
             return $this->parseResponse($data);
         } catch (RequestException $e) {
-            Log::error($e->getMessage());
+            Log::channel('register_sms_create')->error('Ошибка при отправке SMS: ' . $e->getMessage(), [
+                'user_id' => $this->user->id ?? null,
+                'exception' => $e
+            ]);
             return [
                 'status' => 'ERROR',
                 'message' => $e->getMessage(),

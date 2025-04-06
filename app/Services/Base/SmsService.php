@@ -41,13 +41,13 @@ abstract class SmsService
         ];
     }
 
-    public function createVerificationCode(User|null $user = null): PhoneVerificationCode
+    public function createVerificationCode(string $phone, User|null $user = null): PhoneVerificationCode
     {
-        $code = rand(100000, 999999); // или любой другой способ генерации
+        $code = rand(100000, 999999);
         $verificationCode = PhoneVerificationCode::create([
-            'user_id' => $user->id,
+            'user_id' => $user->id ?? null,
             'ip' => request()->ip(),
-            'phone' => $user->phone,
+            'phone' => $phone,
             'code' => $code,
             'expired_at' => now()->addMinutes(10),
         ]);
@@ -55,9 +55,10 @@ abstract class SmsService
         return $verificationCode;
     }
 
-    public function checkVerificationCode(User|null $user, string $code)
+    public function checkVerificationCode(string $phone, string $code, User|null $user = null): bool
     {
-        $record = PhoneVerificationCode::where('code', $code)
+        $record = PhoneVerificationCode::where('phone', $phone)
+            ->where('code', $code)
             ->where('expired_at', '>', now())
             ->latest()
             ->first();
@@ -67,17 +68,20 @@ abstract class SmsService
         }
 
         ConfirmedPhone::create([
-            'user_id' => $user->id,
+            'user_id' => $user->id ?? null,
             'ip' => $record->ip,
             'phone' => $record->phone,
         ]);
 
         $record->delete();
 
-        $user->update([
-            'phone_verified' => true,
-            'phone_verified_at' => now(),
-        ]);
+        if ($user) {
+            $user->update([
+                'phone_verified' => true,
+                'phone_verified_at' => now(),
+            ]);
+        }
+
 
         return true;
     }
