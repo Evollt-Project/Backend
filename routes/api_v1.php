@@ -42,6 +42,7 @@ Route::resource('article', ArticleController::class);
 Route::prefix('articles')->controller(ArticleController::class)->group(function () {
     Route::get('online', 'online');
     Route::get('big', 'big');
+    Route::get('teaching', 'teaching');
 });
 
 Route::put('lesson/reorder', [LessonController::class, 'reorder'])->middleware('auth:sanctum');

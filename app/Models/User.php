@@ -153,6 +153,18 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->belongsToMany(Article::class, 'article_favorites');
     }
 
+    public function teaching()
+    {
+        return $this->hasManyThrough(
+            Article::class,
+            ArticleTeacher::class,
+            'user_id',
+            'id',
+            'id',
+            'article_id'
+        );
+    }
+
     public function want_to_pass(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'article_want_to_pass');

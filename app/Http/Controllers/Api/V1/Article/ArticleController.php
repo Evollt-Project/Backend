@@ -44,6 +44,19 @@ class ArticleController extends Controller
         return ArticleResource::collection($articles->paginate($perPage));
     }
 
+    public function teaching(Request $request, ArticleService $articleService)
+    {
+        $perPage = (int)$request->query('per_page', 10);
+        $user = Auth::user();
+
+        $query = $user->teaching()->getQuery();
+
+        $filtered = $articleService->applyFilters($query, $request->all());
+
+        return ArticleResource::collection($filtered->paginate($perPage));
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
