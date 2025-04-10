@@ -28,7 +28,6 @@ class UserFactory extends Factory
             'surname' => $this->faker->lastName(),
             'balance' => $this->faker->randomNumber(),
             'email' => $this->faker->unique()->safeEmail(),
-            'mail_approve' => $this->faker->boolean(),
             'avatar' => $this->faker->imageUrl(),
             'phone' => $this->faker->e164PhoneNumber,
             'date_of_birth' => $this->faker->date('Y-m-d'),

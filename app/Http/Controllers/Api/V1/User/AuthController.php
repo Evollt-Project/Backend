@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
+use App\Jobs\User\SendEmailVerificationMailJob;
 use App\Jobs\User\SendPhoneVerificationCodeJob;
 use App\Models\User;
 use App\Services\Sms\SmsRuService;
@@ -30,10 +31,44 @@ class AuthController extends Controller
 
         $user->save();
 
+        SendEmailVerificationMailJob::dispatch($user);
+
         return response()->json(
             new UserResource($user),
             200
         );
+    }
+
+    public function approveEmail(Request $request, $id, $hash)
+    {
+        $user = User::findOrFail($id);
+
+        if (!hash_equals((string)$hash, sha1($user->getEmailForVerification()))) {
+            return response()->json(['message' => 'Недопустимая ссылка'], 403);
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return response()->json(['message' => 'Email уже подтверждён']);
+        }
+
+        $user->markEmailAsVerified();
+        $user->email_verified = true;
+        $user->save();
+
+        // Создаём токен
+        $token = $user->createToken('YourAppName')->plainTextToken;
+
+        return response()->json([
+            'message' => 'Email успешно подтверждён',
+            'token' => $token,
+        ]);
+    }
+
+    public function emailResend(Request $request)
+    {
+        $request->user()->sendEmailVerificationNotification();
+
+        return response()->json(['message' => 'Письмо отправлено повторно']);
     }
 
     public function login(LoginRequest $request): JsonResponse
@@ -46,6 +81,12 @@ class AuthController extends Controller
         }
 
         $user = User::where('email', $request->email)->first();
+
+        // 💡 Проверка, подтвержден ли email
+        if (!$user->hasVerifiedEmail()) {
+            Auth::logout();
+            return response()->json(['message' => 'Аккаунт не подтвержден'], 403);
+        }
 
         return response()->json(
             array_merge(

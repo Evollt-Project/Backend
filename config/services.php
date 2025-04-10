@@ -16,6 +16,7 @@ return [
 
     'app' => [
         'name' => env('APP_NAME'),
+        'frontend_url' => env('FRONTEND_URL'),
     ],
 
     'postmark' => [

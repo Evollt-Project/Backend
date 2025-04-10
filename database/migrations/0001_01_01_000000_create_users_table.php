@@ -19,7 +19,6 @@ return new class extends Migration {
             $table->tinyInteger('gender')->nullable();
             $table->string('job')->nullable();
             $table->float('balance')->default(0);
-            $table->boolean('mail_approve')->default(false);
             $table->string('avatar')->nullable();
             $table->string('telegram')->nullable();
             $table->string('github')->nullable();

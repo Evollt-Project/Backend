@@ -23,6 +23,8 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
     Route::post('step/code', 'code');
+    Route::get('/approve/email/{id}/{hash}', 'approveEmail')->middleware(['signed'])->name('verification.verify');
+    Route::get('/email/resend', 'emailResend')->middleware(['auth:sanctum']);
     Route::get('step/code-check', 'codeCheck');
     Route::get('step/email-check-exists', 'emailCheckExists');
     Route::get('logout', 'logout')->middleware(['auth:sanctum']);
