@@ -28,7 +28,7 @@ return new class extends Migration
             $table->foreignId('language_id')->default(1)->constrained();
             $table->integer('time')->nullable();
             $table->integer('price')->nullable();
-            $table->foreignId('user_id')->constrained();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('certificate_type_id')->default(1)->constrained();
             $table->integer('status')->default(0);
             $table->timestamps();
