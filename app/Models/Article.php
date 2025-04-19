@@ -52,14 +52,24 @@ class Article extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    public $fillable = [
         'title',
-        'description',
-        'content',
+        'avatar',
+        'short_content',
+        'what_learn_content',
+        'about_content',
+        'for_who_content',
+        'start_content',
+        'how_learn_content',
+        'what_give_content',
+        'recommended_load',
+        'level_id',
+        'language_id',
         'user_id',
         'status',
         'has_certificate',
-        'time'
+        'time',
+        'status'
     ];
 
     public function user(): BelongsTo
@@ -71,6 +81,7 @@ class Article extends Model
     {
         return $this->belongsToMany(Category::class, 'category_article');
     }
+
     public function subcategories(): BelongsToMany
     {
         return $this->belongsToMany(Subcategory::class, 'subcategory_article');
@@ -94,5 +105,15 @@ class Article extends Model
     public function modules(): HasMany
     {
         return $this->hasMany(Module::class);
+    }
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Level::class);
+    }
+
+    public function language(): BelongsTo
+    {
+        return $this->belongsTo(Language::class);
     }
 }

@@ -3,10 +3,11 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Notifications\VerifyEmailCustom;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -66,7 +67,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use HasApiTokens, HasFactory, Notifiable, HasRoles;
 
@@ -77,6 +78,7 @@ class User extends Authenticatable
      */
     public $fillable = [
         'first_name',
+        'role',
         'surname',
         'description',
         'privacy',
@@ -103,6 +105,11 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public function sendEmailVerificationNotification()
+    {
+        $this->notify(new VerifyEmailCustom());
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -125,6 +132,7 @@ class User extends Authenticatable
     {
         return $this->hasMany(Certificate::class, "user_id");
     }
+
     public function certificate_types()
     {
         return $this->hasMany(CertificateType::class);
@@ -145,6 +153,18 @@ class User extends Authenticatable
         return $this->belongsToMany(Article::class, 'article_favorites');
     }
 
+    public function teaching()
+    {
+        return $this->hasManyThrough(
+            Article::class,
+            ArticleTeacher::class,
+            'user_id',
+            'id',
+            'id',
+            'article_id'
+        );
+    }
+
     public function want_to_pass(): BelongsToMany
     {
         return $this->belongsToMany(Article::class, 'article_want_to_pass');
@@ -154,6 +174,7 @@ class User extends Authenticatable
     {
         return $this->belongsTo(City::class);
     }
+
     public function requisite(): HasOne
     {
         return $this->hasOne(Requisite::class);

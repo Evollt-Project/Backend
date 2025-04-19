@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Api\V1\Article;
 
+use App\Enums\CertificateEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CertificateTypeResource;
-use App\Models\Certificate;
+use Intervention\Image\Laravel\Facades\Image;
 use App\Models\CertificateType;
 use App\Services\Article\CertificateService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Typography\FontFactory;
 
 class CertificateTypeController extends Controller
 {
@@ -26,7 +30,7 @@ class CertificateTypeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(Request $request, CertificateService $certificateService)
     {
         $certificateType = new CertificateType();
         $user = Auth::user();
@@ -36,16 +40,24 @@ class CertificateTypeController extends Controller
                 $certificateType->$field = $request->$field;
             }
         }
-        $certificateType->state = 0;
-        $certificateType->user_id = $user->id;
 
         if ($request->hasFile('path')) {
             $file = $request->file('path');
             if ($file->isValid()) {
                 $path = $file->store('certificate_types', 'public');
                 $certificateType->path = $path;
+                if ($file->isValid()) {
+                    $path = $file->store('certificate_types', 'public');
+                    $certificateType->path = $path;
+
+                    $image = $certificateService->modernImage($certificateType, $file);
+                    $certificateType->preview_image = $image;
+                }
             }
         }
+
+        $certificateType->state = CertificateEnums::MODERATION;
+        $certificateType->user_id = $user->id;
 
         $certificateType->save();
 

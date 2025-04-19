@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers\Api\V1\User;
 
-use App\Enums\ArticleTypeEnums;
-use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CertificateTypeResource;
 use App\Http\Resources\UserResource;
 use App\Models\Skill;
 use App\Models\User;
 use App\Services\User\RequisiteService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -94,19 +92,7 @@ class UserController extends Controller
         ]);
         return $requisite->createOrUpdate($request->requisites);
     }
-
-    public function enums(): JsonResponse
-    {
-        $enums = [
-            'roles' => collect(RoleEnums::cases())
-                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
-            'article_types' => collect(ArticleTypeEnums::cases())
-                ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()])
-        ];
-
-        return response()->json($enums);
-    }
-
+    
     public function changePassword(Request $request): JsonResponse
     {
         $validatedData = $request->validate([

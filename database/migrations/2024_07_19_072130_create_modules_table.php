@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->dateTime('opened_date');
-            $table->text('description');
+            $table->string('description')->default('');
             $table->foreignId('article_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Article\CertificateController;
 use App\Http\Controllers\Api\V1\Article\CertificateTypeController;
 use App\Http\Controllers\Api\V1\Article\LessonController;
 use App\Http\Controllers\Api\V1\Article\ModuleController;
+use App\Http\Controllers\Api\V1\GeneralController;
 use App\Http\Controllers\Api\V1\User\AuthController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
@@ -16,11 +17,16 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::get('enums', [UserController::class, 'enums']);
+Route::get('enums', [GeneralController::class, 'enums']);
 
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('register', 'register');
     Route::post('login', 'login');
+    Route::post('step/code', 'code');
+    Route::get('/approve/email/{id}/{hash}', 'approveEmail')->middleware(['signed'])->name('verification.verify');
+    Route::get('/email/resend', 'emailResend')->middleware(['auth:sanctum']);
+    Route::get('step/code-check', 'codeCheck');
+    Route::get('step/email-check-exists', 'emailCheckExists');
     Route::get('logout', 'logout')->middleware(['auth:sanctum']);
 });
 
@@ -36,9 +42,13 @@ Route::resource('article', ArticleController::class);
 Route::prefix('articles')->controller(ArticleController::class)->group(function () {
     Route::get('online', 'online');
     Route::get('big', 'big');
+    Route::get('teaching', 'teaching');
 });
-Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
+
+Route::put('lesson/reorder', [LessonController::class, 'reorder'])->middleware('auth:sanctum');
 Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
+
+Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('category', CategoryController::class);
 Route::resource('catalog', CatalogController::class);
 Route::resource('certificate', CertificateController::class)->middleware(['auth:sanctum']);

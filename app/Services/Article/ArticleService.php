@@ -5,12 +5,14 @@ namespace App\Services\Article;
 use App\Enums\ArticleStatusEnums;
 use App\Enums\ArticleTypeEnums;
 use App\Models\Article;
+use App\Services\Base\Service;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Log;
+use Illuminate\Support\Facades\Log;
 use ValueError;
 
-class ArticleService
+class ArticleService extends Service
 {
     public function isValidStatus(int $status): bool
     {
@@ -26,39 +28,51 @@ class ArticleService
     public function get(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
+        $filters = $request->all();
         $query = Article::query();
 
+        if (isset($filters['type']) && $user) {
+            $type = ArticleTypeEnums::tryFrom((int)$filters['type']);
 
-        if ($request->has('type')) {
-            $type = ArticleTypeEnums::tryFrom((int) $request->query('type'));
+            $query = match ($type) {
+                ArticleTypeEnums::PASSING => $user->passing(),
+                ArticleTypeEnums::FAVORITES => $user->favorites(),
+                ArticleTypeEnums::WANT_TO_PASS => $user->want_to_pass(),
+                default => Article::query()
+            };
+        }
 
-            if ($user && $type) {
-                switch ($type) {
-                    case ArticleTypeEnums::PASSING:
-                        $query = $user->passing();
-                        break;
-                    case ArticleTypeEnums::FAVORITES:
-                        $query = $user->favorites();
-                        break;
-                    case ArticleTypeEnums::WANT_TO_PASS:
-                        $query = $user->want_to_pass();
-                        break;
-                }
+        return $this->applyFilters($query, $filters);
+    }
+
+    public function applyFilters(Builder $query, array $filters): Builder
+    {
+        // Поиск по тексту
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('user', function ($q) use ($search) {
+                        $q->whereRaw("CONCAT(first_name, ' ', COALESCE(surname, '')) LIKE ?", ["%{$search}%"]);
+                    });
+            });
+        }
+
+        // Фильтр по сертификату
+        if (isset($filters['has_certificate']) && (bool)$filters['has_certificate']) {
+            $query->where('has_certificate', true);
+        }
+
+        // Фильтр по статусу
+        if (!empty($filters['status'])) {
+            $statusEnum = ArticleStatusEnums::tryFrom((int)$filters['status']);
+            if ($statusEnum) {
+                $query->where('status', $statusEnum->value);
             }
         }
 
-        if ($search = $request->query('search')) {
-            $query->where('title', 'like', "%{$search}%")
-                ->orWhere('description', 'like', "%{$search}%")
-                ->orWhereHas('user', function ($query) use ($search) {
-                    $query->whereRaw("CONCAT(first_name, ' ', COALESCE(surname, '')) LIKE ?", ["%{$search}%"]);
-                });
-        }
-        if ($certificate = $request->query('has_certificate')) {
-            if ($certificate) {
-                $query->where('has_certificate', 1);
-            }
-        }
+        // Можно добавлять и другие фильтры здесь
 
         return $query;
     }

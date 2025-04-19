@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * 
+ *
  *
  * @property int $id
  * @property string $title
@@ -30,9 +30,11 @@ class Lesson extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    public $fillable = [
         'title',
+        'position',
         'content',
-        'module_id'
+        'module_id',
+        'user_id'
     ];
 }

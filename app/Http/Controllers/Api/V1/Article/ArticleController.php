@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Api\V1\Article;
 
-use App\Enums\ArticleTypeEnums;
+use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
-use App\Http\Resources\UserResource;
+use App\Jobs\Article\CreateJob as ArticleCreateJob;
 use App\Models\Article;
+use App\Models\ArticleAdmin;
+use App\Models\ArticleTeacher;
 use App\Models\Category;
 use App\Models\Subcategory;
-use App\Models\User;
 use App\Services\Article\ArticleService;
 use Exception;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class ArticleController extends Controller
     {
         $this->middleware('auth:sanctum')->except(['index', 'show', 'big', 'online']);
     }
+
     /**
      * Display a listing of the resource.
      */
@@ -42,13 +44,29 @@ class ArticleController extends Controller
         return ArticleResource::collection($articles->paginate($perPage));
     }
 
+    public function teaching(Request $request, ArticleService $articleService)
+    {
+        $perPage = (int)$request->query('per_page', 10);
+        $user = Auth::user();
+
+        $query = $user->teaching()->getQuery();
+
+        $filtered = $articleService->applyFilters($query, $request->all());
+
+        return ArticleResource::collection($filtered->paginate($perPage));
+    }
+
+
     /**
      * Store a newly created resource in storage.
      */
     public function store(ArticleRequest $request)
     {
-        $data = $request->only(['title', 'description', 'content']);
-        $data['user_id'] = Auth::id();
+        $user = Auth::user();
+        $data = $request->only(['title']);
+        $data['user_id'] = $user->id;
+        $data['level_id'] = 1;
+        $data['language_id'] = 1;
 
         $article = Article::create($data);
 
@@ -62,6 +80,22 @@ class ArticleController extends Controller
 
         $subcategories = Subcategory::whereIn('id', $subcategoryIds)->get();
         $article->categories()->sync($subcategories);
+
+        ArticleTeacher::create([
+            'article_id' => $article->id,
+            'user_id' => $user->id,
+        ]);
+
+        ArticleAdmin::create([
+            'article_id' => $article->id,
+            'user_id' => $user->id,
+        ]);
+
+        if ($user['role'] < RoleEnums::TEACHER->value) {
+            $user->update(['role' => RoleEnums::TEACHER->value]);
+        }
+
+        ArticleCreateJob::dispatch($user, $article);
 
         return response()->json(new ArticleResource($article), 200);
     }
@@ -83,16 +117,50 @@ class ArticleController extends Controller
      */
     public function update(Request $request, $id, ArticleService $articleService)
     {
+        // TODO: Доделать обновление курса (используются другие поля)
         $article = Article::find($id);
+        $user = Auth::user();
 
         if (!$article) {
             return response()->json(['error' => 'Курс не найден'], 404);
         }
 
-        $data = $request->only(['title', 'description', 'content']);
+        $data = $request->only(
+            [
+                'title',
+                'avatar',
+                'short_content',
+                'what_learn_content',
+                'about_content',
+                'for_who_content',
+                'start_content',
+                'how_learn_content',
+                'what_give_content',
+                'recommended_load',
+                'level_id',
+                'language_id',
+                'user_id'
+            ]
+        );
 
-        if ($request->has('status') && $articleService->isValidStatus($request->status)) {
+        if (
+            $request->has('status') &&
+            $articleService->isValidStatus($request->status) &&
+            $user->role == RoleEnums::ADMIN
+        ) {
             $data['status'] = $request->status;
+        } else {
+            return response()->json([
+                'message' => 'Статус имеет невалидное значение, либо пользователь не имеет права менять статус курса'
+            ]);
+        }
+
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            if ($file->isValid()) {
+                $path = $file->store('articles', 'public');
+                $article->avatar = $path;
+            }
         }
 
         if (!empty($data)) {
@@ -149,12 +217,14 @@ class ArticleController extends Controller
                     'articles' => ArticleResource::collection($newArticles)
                 ]
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'errors' => 'Не удалось загрузить онлайн курсы'
             ], 500);
         }
     }
+
     public function big()
     {
         try {
@@ -170,7 +240,8 @@ class ArticleController extends Controller
                     'articles' => ArticleResource::collection($bigArticles)
                 ],
             ]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
             return response()->json([
                 'errors' => 'Не удалось загрузить большие курсы'
             ], 500);

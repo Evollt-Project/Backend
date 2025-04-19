@@ -17,6 +17,7 @@ class CertificateTypeResource extends JsonResource
         return [
             "id" => $this->id,
             "path" => $this->path,
+            "preview_image" => $this->preview_image,
             "title" => $this->title,
             "owner" => new UserResource($this->user),
             "positions" => [

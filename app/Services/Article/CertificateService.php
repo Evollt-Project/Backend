@@ -8,13 +8,21 @@ use App\Enums\CertificateEnums;
 use App\Models\Article;
 use App\Models\Certificate;
 use App\Models\CertificateType;
+use App\Services\Base\Service;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log as FacadesLog;
+use Intervention\Image\Encoders\AutoEncoder;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Interfaces\ImageInterface;
+use Intervention\Image\Typography\FontFactory;
 use Log;
+use Storage;
+use Str;
 use ValueError;
 
-class CertificateService
+class CertificateService extends Service
 {
     /**
      * Undocumented function
@@ -67,5 +75,45 @@ class CertificateService
         }
 
         return $query;
+    }
+
+    public function modernImage(CertificateType $certificateType, UploadedFile $file): string
+    {
+        $positions = [
+            json_decode($certificateType->title_position, true),
+            json_decode($certificateType->date_position, true),
+            json_decode($certificateType->logo_position, true)
+        ];
+
+        $image = ImageManager::gd()->read($file);
+        foreach ($positions as $position) {
+            $image->text($this->getCertificateLabel($position['type']), $position['x'], $position['y'], function (FontFactory $font) use ($position) {
+                $font->filename('./fonts/JetBrainsMono-Regular.ttf');
+                $font->size($position['size']);
+                $font->color($position['color'] ?? 'fff');
+                $font->align('left');
+                $font->valign('top');
+            });
+        }
+
+        $imagePath = 'layout_previews/' . Str::random() . '.' . $file->getClientOriginalExtension();
+        Storage::put(
+            'public/' . $imagePath,
+            $image->encodeByExtension($file->getClientOriginalExtension(), quality: 70)
+        );
+
+        return $imagePath;
+    }
+
+    private static function getCertificateLabel($type)
+    {
+        switch ($type) {
+            case 'logo':
+                return 'Evollt Academy';
+            case 'date':
+                return '01.01.2025';
+            case 'title':
+                return 'Иванов Иван Иванович';
+        }
     }
 }

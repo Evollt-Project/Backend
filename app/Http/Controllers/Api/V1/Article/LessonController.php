@@ -6,7 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LessonRequest;
 use App\Http\Resources\LessonResource;
 use App\Models\Lesson;
+use App\Models\Module;
+use App\Services\Lesson\ReorderService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LessonController extends Controller
 {
@@ -24,9 +28,13 @@ class LessonController extends Controller
      */
     public function store(LessonRequest $request)
     {
-        $data = $request->only(['title', 'content', 'module_id']);
+        $data = array_merge([
+            'user_id' => Auth::id()
+        ], $request->only(['title', 'content', 'module_id']));
 
         if (!empty($data)) {
+            $lessons = Module::find($data['module_id'])->lessons;
+            $data['position'] = count($lessons);
             $lesson = Lesson::create($data);
         }
 
@@ -54,9 +62,14 @@ class LessonController extends Controller
 
         $data = $request->only(['title', 'content', 'module_id']);
 
-        if (!empty($data)) {
-            $lesson->update($data);
+        foreach ($lesson->fillable as $field) {
+            if (isset($data[$field])) {
+                $lesson->$field = $data[$field];
+            }
         }
+
+        $lesson->save();
+
 
         return response()->json(new LessonResource($lesson), 200);
     }
@@ -75,5 +88,12 @@ class LessonController extends Controller
         $lesson->delete();
 
         return response()->json(['message' => 'Урок удален'], 200);
+    }
+
+    public function reorder(Request $request, ReorderService $reorderService): JsonResponse
+    {
+        $reorderedLessons = $reorderService->reorder($request->lesson_ids);
+
+        return response()->json(LessonResource::collection($reorderedLessons));
     }
 }

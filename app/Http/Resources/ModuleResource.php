@@ -22,7 +22,7 @@ class ModuleResource extends JsonResource
             'title' => $this->title,
             'opened_date' => $this->opened_date,
             'description' => $this->description,
-            'lessons' => LessonResource::collection($this->lessons),
+            'lessons' => LessonResource::collection($this->lessons->sortBy('position')),
             'status' => $this->status ? $this->getModuleStatus() : false,
             'created_at' => $this->created_at
         ];

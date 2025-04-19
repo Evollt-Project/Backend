@@ -21,8 +21,6 @@ class LessonRequest extends FormRequest
      */
     public function rules(): array
     {
-        return [
-            'title' => 'required|min:8',
-        ];
+        return [];
     }
 }

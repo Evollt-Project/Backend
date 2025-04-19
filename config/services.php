@@ -14,6 +14,11 @@ return [
     |
     */
 
+    'app' => [
+        'name' => env('APP_NAME'),
+        'frontend_url' => env('FRONTEND_URL'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
@@ -29,6 +34,11 @@ return [
             'bot_user_oauth_token' => env('SLACK_BOT_USER_OAUTH_TOKEN'),
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
+    ],
+
+    'sms' => [
+        'url' => env('SMS_SERVICE_URL'),
+        'api_key' => env('SMS_SERVICE_API_KEY'),
     ],
 
 ];
