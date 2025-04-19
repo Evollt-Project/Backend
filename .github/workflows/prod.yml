@@ -44,9 +44,9 @@ jobs:
 
           # Клонируем или обновляем репозиторий
           if [ ! -d "/var/www/prod/backend" ]; then
-            git clone git@github.com:Evollt-Project/Backend.git /var/www/bot
+            git clone git@github.com:Evollt-Project/Backend.git /var/www/prod/backend
           else
-            cd /var/www/bot
+            cd /var/www/prod/backend
             git reset --hard
             git pull origin master
           fi
