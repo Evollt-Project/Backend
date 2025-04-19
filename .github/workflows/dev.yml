@@ -54,7 +54,7 @@ jobs:
           # Переход в директорию проекта
           cd /var/www/dev/backend
 
-          export NGINX_PORT=8000
+          export NGINX_PORT=8001
           envsubst < docker-compose.template.yml > docker-compose.yml
 
           # Остановка и удаление старых контейнеров
