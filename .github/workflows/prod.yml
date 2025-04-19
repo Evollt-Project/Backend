@@ -25,6 +25,13 @@ jobs:
       - name: Installing SSH client
         run: sudo apt-get install -y openssh-client
 
+      - name: Set NGINX_PORT based on branch
+        run: echo "NGINX_PORT=8001" >> $GITHUB_ENV
+
+      - name: Generate docker-compose.yml
+        run: |
+          envsubst < docker-compose.template.yml > docker-compose.yml
+
       # Добавляем SSH-ключ
       - name: Add SSH key
         run: |
