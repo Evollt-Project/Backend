@@ -42,3 +42,7 @@ services:
       - "${PMA_PORT}:80"
     env_file:
       - docker/.env
+networks:
+  evollt:
+    external: true
+    name: ${DOCKER_NETWORK}
