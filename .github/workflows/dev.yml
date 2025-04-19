@@ -55,6 +55,8 @@ jobs:
           cd /var/www/dev/backend
 
           export NGINX_PORT=8001
+          export MYSQL_PORT=3317
+          export PMA_PORT=8081
           envsubst < docker-compose.template.yml > docker-compose.yml
 
           # Остановка и удаление старых контейнеров
