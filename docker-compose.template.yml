@@ -9,12 +9,16 @@ services:
     depends_on:
       - mysql
       - php
+    networks:
+      - evollt
   php:
     build:
       context: docker
       dockerfile: php.Dockerfile
     volumes:
       - ./:/var/www/app
+    networks:
+      - evollt
   mysql:
     image: mysql:8.0
     ports:
@@ -23,12 +27,16 @@ services:
       - docker/.env
     volumes:
       - "./docker/volume/mysql:/var/lib/mysql"
+    networks:
+      - evollt
   composer:
     build:
       context: docker
       dockerfile: composer.Dockerfile
     volumes:
       - ./:/var/www/app
+    networks:
+      - evollt
   artisan:
     build:
       context: docker
@@ -36,12 +44,16 @@ services:
     volumes:
       - ./:/var/www/app
     entrypoint: ["php", "/var/www/app/artisan"]
+    networks:
+      - evollt
   phpmyadmin:
     image: phpmyadmin/phpmyadmin
     ports:
       - "${PMA_PORT}:80"
     env_file:
       - docker/.env
+    networks:
+      - evollt
 networks:
   evollt:
     external: true
