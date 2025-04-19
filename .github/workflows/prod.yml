@@ -43,7 +43,7 @@ jobs:
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
           # Клонируем или обновляем репозиторий
-          if [ ! -d "/var/www/academy/prod/backend" ]; then
+          if [ ! -d "/var/www/prod/backend" ]; then
             git clone git@github.com:Evollt-Project/Backend.git /var/www/bot
           else
             cd /var/www/bot
@@ -52,7 +52,7 @@ jobs:
           fi
 
           # Переход в директорию проекта
-          cd /var/www/academy/prod/backend
+          cd /var/www/prod/backend
 
           # Остановка и удаление старых контейнеров
           docker compose down
