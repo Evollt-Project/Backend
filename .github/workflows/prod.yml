@@ -28,10 +28,6 @@ jobs:
       - name: Set NGINX_PORT based on branch
         run: echo "NGINX_PORT=8001" >> $GITHUB_ENV
 
-      - name: Generate docker-compose.yml
-        run: |
-          envsubst < docker-compose.template.yml > docker-compose.yml
-
       # Добавляем SSH-ключ
       - name: Add SSH key
         run: |
@@ -60,6 +56,8 @@ jobs:
 
           # Переход в директорию проекта
           cd /var/www/prod/backend
+
+          envsubst < docker-compose.template.yml > docker-compose.yml
 
           # Остановка и удаление старых контейнеров
           docker compose down
