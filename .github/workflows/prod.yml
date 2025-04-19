@@ -59,4 +59,5 @@ jobs:
 
           # Запуск новых контейнеров
           docker compose up -d --build
+          docker compose run composer install
           EOF
