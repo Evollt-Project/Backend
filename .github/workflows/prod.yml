@@ -54,6 +54,7 @@ jobs:
           # Переход в директорию проекта
           cd /var/www/prod/backend
 
+          export COMPOSE_PROJECT_NAME=evollt-academy
           export NGINX_PORT=8000
           export MYSQL_PORT=3316
           export PMA_PORT=8080
