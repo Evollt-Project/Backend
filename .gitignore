@@ -19,4 +19,3 @@ yarn-error.log
 /.vscode
 /docker/volume
 .DS_Store
-docker-compose.yml

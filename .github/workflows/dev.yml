@@ -54,13 +54,6 @@ jobs:
           # Переход в директорию проекта
           cd /var/www/dev/backend
 
-          export COMPOSE_PROJECT_NAME=evollt-academy-dev
-          export NGINX_PORT=8001
-          export MYSQL_PORT=3317
-          export PMA_PORT=8081
-          export DOCKER_NETWORK=evollt-academy-dev_default
-          envsubst < docker-compose.template.yml > docker-compose.yml
-
           # Остановка и удаление старых контейнеров
           docker compose down
 
