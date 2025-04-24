@@ -6,11 +6,16 @@ use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SubinstructionResource;
 use App\Models\Subinstruction;
+use App\Services\Instruction\SubinstructionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class SubinstructionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
+    }
     /**
      * Display a listing of the resource.
      */
@@ -19,10 +24,20 @@ class SubinstructionController extends Controller
         return response()->json(SubinstructionResource::collection(Subinstruction::all()), 201);
     }
 
+    public function search(Request $request, SubinstructionService $subinstructionService)
+    {
+        $searchText = $request->get('search');
+
+        $subinstructions = $subinstructionService->search($searchText);
+
+
+        return SubinstructionResource::collection($subinstructions)->response();
+    }
+
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Subinstruction $subinstructionService)
+    public function store(Request $request)
     {
         $user = Auth::user();
         $role = RoleEnums::from($user->role);
