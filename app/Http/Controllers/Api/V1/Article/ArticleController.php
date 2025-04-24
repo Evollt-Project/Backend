@@ -190,7 +190,7 @@ class ArticleController extends Controller
 
         $article->delete();
 
-        return response()->json(['message' => 'Пост удален'], 200);
+        return response()->json(['message' => 'Курс удален'], 200);
     }
 
     public function online()
