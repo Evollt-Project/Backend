@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\V1\Article\CertificateTypeController;
 use App\Http\Controllers\Api\V1\Article\LessonController;
 use App\Http\Controllers\Api\V1\Article\ModuleController;
 use App\Http\Controllers\Api\V1\GeneralController;
+use App\Http\Controllers\Api\V1\Instruction\InstructionController;
+use App\Http\Controllers\Api\V1\Instruction\SubinstructionController;
 use App\Http\Controllers\Api\V1\User\AuthController;
 use App\Http\Controllers\Api\V1\User\UserController;
 use Illuminate\Http\Request;
@@ -50,6 +52,10 @@ Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
 
 Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('category', CategoryController::class);
+Route::resource('category', CategoryController::class);
 Route::resource('catalog', CatalogController::class);
 Route::resource('certificate', CertificateController::class)->middleware(['auth:sanctum']);
 Route::resource('certificate_type', CertificateTypeController::class)->middleware(['auth:sanctum']);
+
+Route::resource('instruction', InstructionController::class)->middleware('auth:sanctum');
+Route::resource('subinstruction', SubinstructionController::class)->middleware('auth:sanctum');

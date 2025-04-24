@@ -2,7 +2,6 @@
 
 namespace App\Services\User;
 
-use App\Enums\NalogStatusEnums;
 use App\Models\Requisite;
 use App\Services\Base\Service;
 use Illuminate\Support\Facades\Auth;
