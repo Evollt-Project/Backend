@@ -6,24 +6,40 @@ use App\Enums\RoleEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\InstructionResource;
 use App\Models\Instruction;
-use App\Services\Instruction\Subinstruction;
+use App\Services\Instruction\InstructionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class InstructionController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:sanctum')->only(['store', 'update', 'destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json(InstructionResource::collection(Instruction::all()), 201);
+        $instructions = Instruction::paginate(10);
+        return InstructionResource::collection($instructions)->response();
+    }
+
+    public function search(Request $request, InstructionService $instructionService)
+    {
+        $searchText = $request->get('search');
+
+        $instructions = $instructionService->search($searchText);
+
+
+        return InstructionResource::collection($instructions)->response();
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, Subinstruction $subinstructionService)
+    public function store(Request $request)
     {
         $user = Auth::user();
         $role = RoleEnums::from($user->role);
