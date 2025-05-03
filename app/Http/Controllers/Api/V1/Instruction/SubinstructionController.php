@@ -85,8 +85,8 @@ class SubinstructionController extends Controller
         $data = $request->validate([
             'title' => 'string|max:255',
             'logo' => 'string|max:255',
-            'short_description' => 'string|max:500',
-            'description' => 'string',
+            'short_content' => 'string|max:500',
+            'content' => 'string',
         ]);
 
         foreach ($subinstruction->fillable as $field) {
