@@ -19,19 +19,13 @@ class SubinstructionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, SubinstructionService $subinstructionService)
     {
-        return response()->json(SubinstructionResource::collection(Subinstruction::all()), 201);
-    }
+        $perPage = $request->query('per_page') ?? 10;
 
-    public function search(Request $request, SubinstructionService $subinstructionService)
-    {
-        $searchText = $request->get('search');
+        $subinstructions = $subinstructionService->search($request->search ?? '');
 
-        $subinstructions = $subinstructionService->search($searchText);
-
-
-        return SubinstructionResource::collection($subinstructions)->response();
+        return SubinstructionResource::collection($subinstructions->paginate($perPage))->response();
     }
 
     /**

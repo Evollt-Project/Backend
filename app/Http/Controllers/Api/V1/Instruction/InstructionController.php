@@ -20,20 +20,13 @@ class InstructionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, InstructionService $instructionService)
     {
-        $instructions = Instruction::paginate(10);
-        return InstructionResource::collection($instructions)->response();
-    }
+        $perPage = $request->query('per_page') ?? 10;
 
-    public function search(Request $request, InstructionService $instructionService)
-    {
-        $searchText = $request->get('search');
+        $instructions = $instructionService->search($request->search ?? '');
 
-        $instructions = $instructionService->search($searchText);
-
-
-        return InstructionResource::collection($instructions)->response();
+        return InstructionResource::collection($instructions->paginate($perPage))->response();
     }
 
     /**
