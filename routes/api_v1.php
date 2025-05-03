@@ -58,9 +58,7 @@ Route::resource('certificate', CertificateController::class)->middleware(['auth:
 Route::resource('certificate_type', CertificateTypeController::class)->middleware(['auth:sanctum']);
 
 // Инструкции
-Route::get('instruction/search', [InstructionController::class, 'search']);
 Route::resource('instruction', InstructionController::class);
 
 // Подинструкция
-Route::get('subinstruction/search', [SubinstructionController::class, 'search']);
 Route::resource('subinstruction', SubinstructionController::class);

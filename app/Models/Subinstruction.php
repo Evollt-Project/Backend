@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Subinstruction extends Model
 {
-    protected $fillable = [
+    public $fillable = [
         'title',
         'logo',
         'short_content',

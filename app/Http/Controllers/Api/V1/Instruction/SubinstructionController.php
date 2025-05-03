@@ -19,9 +19,13 @@ class SubinstructionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request, SubinstructionService $subinstructionService)
     {
-        return response()->json(SubinstructionResource::collection(Subinstruction::all()), 201);
+        $perPage = $request->query('per_page') ?? 10;
+
+        $subinstructions = $subinstructionService->search($request->search ?? '');
+
+        return SubinstructionResource::collection($subinstructions->paginate($perPage))->response();
     }
 
     public function search(Request $request, SubinstructionService $subinstructionService)
@@ -91,8 +95,8 @@ class SubinstructionController extends Controller
         $data = $request->validate([
             'title' => 'string|max:255',
             'logo' => 'string|max:255',
-            'short_description' => 'string|max:500',
-            'description' => 'string',
+            'short_content' => 'string|max:500',
+            'content' => 'string',
         ]);
 
         foreach ($subinstruction->fillable as $field) {
