@@ -28,6 +28,16 @@ class SubinstructionController extends Controller
         return SubinstructionResource::collection($subinstructions->paginate($perPage))->response();
     }
 
+    public function search(Request $request, SubinstructionService $subinstructionService)
+    {
+        $searchText = $request->get('search');
+
+        $subinstructions = $subinstructionService->search($searchText);
+
+
+        return SubinstructionResource::collection($subinstructions)->response();
+    }
+
     /**
      * Store a newly created resource in storage.
      */
