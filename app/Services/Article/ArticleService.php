@@ -32,7 +32,7 @@ class ArticleService extends Service
         $query = Article::query();
 
         if (isset($filters['type']) && $user) {
-            $type = ArticleTypeEnums::tryFrom((int)$filters['type']);
+            $type = ArticleTypeEnums::tryFrom((int) $filters['type']);
 
             $query = match ($type) {
                 ArticleTypeEnums::PASSING => $user->passing(),
@@ -51,28 +51,30 @@ class ArticleService extends Service
         if (!empty($filters['search'])) {
             $search = $filters['search'];
             $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%")
-                    ->orWhereHas('user', function ($q) use ($search) {
-                        $q->whereRaw("CONCAT(first_name, ' ', COALESCE(surname, '')) LIKE ?", ["%{$search}%"]);
-                    });
+                collect([
+                    'title',
+                    'short_content',
+                    'about_content',
+                ])->each(fn($field) => $q->orWhere($field, 'like', "%{$search}%"));
+
+                $q->orWhereHas('user', function ($q) use ($search) {
+                    $q->whereRaw("CONCAT(first_name, ' ', COALESCE(surname, '')) LIKE ?", ["%{$search}%"]);
+                });
             });
         }
 
         // Фильтр по сертификату
-        if (isset($filters['has_certificate']) && (bool)$filters['has_certificate']) {
+        if (isset($filters['has_certificate']) && (bool) $filters['has_certificate']) {
             $query->where('has_certificate', true);
         }
 
         // Фильтр по статусу
         if (!empty($filters['status'])) {
-            $statusEnum = ArticleStatusEnums::tryFrom((int)$filters['status']);
+            $statusEnum = ArticleStatusEnums::tryFrom((int) $filters['status']);
             if ($statusEnum) {
                 $query->where('status', $statusEnum->value);
             }
         }
-
-        // Можно добавлять и другие фильтры здесь
 
         return $query;
     }
