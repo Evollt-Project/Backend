@@ -18,8 +18,8 @@ class SubinstructionResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'logo' => $this->logo,
-            'short_description' => $this->short_content,
-            'description' => $this->content,
+            'short_description' => $this->short_description,
+            'description' => $this->description,
             'instruction' => $this->instruction
         ];
     }
