@@ -18,7 +18,7 @@ class SubinstructionService extends Service
     {
         $instructions = Subinstruction::where(function ($query) use ($text) {
             $query->where('title', 'like', "%{$text}%")
-                ->orWhere('short_content', 'like', "%{$text}%");
+                ->orWhere('short_description', 'like', "%{$text}%");
         });
 
         return $instructions;
