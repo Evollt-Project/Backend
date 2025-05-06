@@ -52,8 +52,8 @@ class SubinstructionController extends Controller
         $newSubinstruction = $request->validate([
             'title' => 'required|string|max:255',
             'logo' => 'required|string|max:255',
-            'short_content' => 'required|string|max:500',
-            'content' => 'required|string',
+            'short_description' => 'required|string|max:500',
+            'description' => 'required|string',
         ]);
         $subinstruction = Subinstruction::create(array_merge($newSubinstruction, ['instruction_id' => $request->instruction_id]));
 
