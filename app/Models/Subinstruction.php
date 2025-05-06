@@ -9,8 +9,8 @@ class Subinstruction extends Model
     public $fillable = [
         'title',
         'logo',
-        'short_content',
-        'content',
+        'short_description',
+        'description',
         'instruction_id'
     ];
 
