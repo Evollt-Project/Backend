@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('programming_steps', function (Blueprint $table) {
+        Schema::create('html_css_checks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
-            $table->text('content');
-            $table->integer('scores')->default(1);
+            $table->foreignId('html_css_task_id')->constrained()->onDelete('cascade');
+            $table->integer('type');
+            $table->string('title');
+            $table->string('value');
             $table->timestamps();
         });
     }
@@ -25,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programming_steps');
+        Schema::dropIfExists('html_css_checks');
     }
 };

@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('match_task_seconds', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->foreignId('match_task_first_id')->constrained()->onDelete('cascade');
             $table->integer('position')->default(0);
+            $table->foreignId('match_task_first_id')->constrained()->onDelete('cascade');
             $table->foreignId('match_task_step_id')->constrained()->onDelete('cascade');
             $table->timestamps();
         });

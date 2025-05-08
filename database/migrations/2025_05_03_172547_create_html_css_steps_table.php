@@ -14,6 +14,11 @@ return new class extends Migration
         // TODO: Доделать таблицу
         Schema::create('html_css_steps', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
+            $table->text('content');
+            $table->integer('scores')->default(1);
+            $table->text('html_layout');
+            $table->text('css_layout');
             $table->timestamps();
         });
     }

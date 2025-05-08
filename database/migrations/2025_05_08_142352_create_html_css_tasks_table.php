@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('programming_steps', function (Blueprint $table) {
+        Schema::create('html_css_tasks', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
-            $table->text('content');
-            $table->integer('scores')->default(1);
+            $table->foreignId('html_css_step_id')->constrained()->onDelete('cascade');
+            $table->string('dom_element');
+            $table->string('task');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programming_steps');
+        Schema::dropIfExists('html_css_tasks');
     }
 };

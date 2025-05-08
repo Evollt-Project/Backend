@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        // TODO: Доделать таблицу
         Schema::create('programming_test_variants', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('programming_step_id')->constrained()->onDelete('cascade');
+            $table->string('input');
+            $table->string('output');
             $table->timestamps();
         });
     }
