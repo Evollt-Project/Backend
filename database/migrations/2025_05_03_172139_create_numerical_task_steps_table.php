@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
             $table->text('content');
             $table->integer('scores')->default(1);
-            $table->number('correct');
-            $table->number('fallibility');
+            $table->integer('correct');
+            $table->integer('fallibility');
             $table->boolean('random');
             $table->timestamps();
         });
