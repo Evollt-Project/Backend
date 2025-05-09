@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('html_css_steps', function (Blueprint $table) {
+        Schema::create('steps', function (Blueprint $table) {
             $table->id();
+            $table->integer('position')->default(0);
             $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
-            $table->text('content');
-            $table->integer('scores')->default(1);
-            $table->text('html_layout');
-            $table->text('css_layout');
+            $table->unsignedBigInteger('step_id');
+            $table->string('step_type');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('html_css_steps');
+        Schema::dropIfExists('steps');
     }
 };

@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('text_steps', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lesson_id')->constrained()->onDelete('cascade');
             $table->text('content');
             $table->timestamps();
         });

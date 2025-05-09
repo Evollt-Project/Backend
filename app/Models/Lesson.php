@@ -37,4 +37,9 @@ class Lesson extends Model
         'module_id',
         'user_id'
     ];
+
+    public function steps()
+    {
+        return $this->hasMany(Step::class)->with('stepable')->orderBy('position');
+    }
 }

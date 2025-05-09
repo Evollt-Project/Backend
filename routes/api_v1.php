@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\Article\CertificateController;
 use App\Http\Controllers\Api\V1\Article\CertificateTypeController;
 use App\Http\Controllers\Api\V1\Article\LessonController;
 use App\Http\Controllers\Api\V1\Article\ModuleController;
+use App\Http\Controllers\Api\V1\Article\Step\StepController;
 use App\Http\Controllers\Api\V1\GeneralController;
 use App\Http\Controllers\Api\V1\Instruction\InstructionController;
 use App\Http\Controllers\Api\V1\Instruction\SubinstructionController;
@@ -49,6 +50,7 @@ Route::prefix('articles')->controller(ArticleController::class)->group(function 
 
 Route::put('lesson/reorder', [LessonController::class, 'reorder'])->middleware('auth:sanctum');
 Route::resource('lesson', LessonController::class)->middleware('auth:sanctum');
+Route::resource('step', StepController::class)->middleware('auth:sanctum');
 
 Route::resource('module', ModuleController::class)->middleware('auth:sanctum');
 Route::resource('category', CategoryController::class);

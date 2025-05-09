@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Enums\ArticleTypeEnums;
 use App\Enums\CertificateEnums;
 use App\Enums\RoleEnums;
+use App\Enums\StepEnums;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LanguageResource;
 use App\Http\Resources\LevelResource;
@@ -24,7 +25,8 @@ class GeneralController extends Controller
             'certificate_types' => collect(CertificateEnums::cases())
                 ->mapWithKeys(fn($case) => [$case->value => $case->getDescription()]),
             'languages' => LanguageResource::collection(Language::all()),
-            'levels' => LevelResource::collection(Level::all())
+            'levels' => LevelResource::collection(Level::all()),
+            'lesson_step_types' => StepEnums::groupedDescriptions()
         ];
 
         return response()->json($enums);
