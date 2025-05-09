@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('title');
             $table->foreignId('instruction_id')->constrained()->onDelete('cascade');
             $table->string('logo');
-            $table->string('short_description');
-            $table->string('description');
+            $table->text('short_description');
+            $table->text('description');
             $table->timestamps();
         });
     }
