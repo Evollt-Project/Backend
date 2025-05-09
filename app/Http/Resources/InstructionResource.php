@@ -19,7 +19,6 @@ class InstructionResource extends JsonResource
             'title' => $this->title,
             'logo' => $this->logo,
             'short_description' => $this->short_description,
-            'description' => $this->description,
             'subinstructions' => SubinstructionResource::collection($this->subinstructions)
         ];
     }
