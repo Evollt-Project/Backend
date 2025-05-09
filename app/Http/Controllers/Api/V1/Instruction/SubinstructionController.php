@@ -23,19 +23,14 @@ class SubinstructionController extends Controller
     {
         $perPage = $request->query('per_page') ?? 10;
 
-        $subinstructions = $subinstructionService->search($request->search ?? '');
+        $validatedRequest = $request->validate([
+            'search' => '',
+            'instruction_id' => ''
+        ]);
+
+        $subinstructions = $subinstructionService->filter($validatedRequest);
 
         return SubinstructionResource::collection($subinstructions->paginate($perPage))->response();
-    }
-
-    public function search(Request $request, SubinstructionService $subinstructionService)
-    {
-        $searchText = $request->get('search');
-
-        $subinstructions = $subinstructionService->search($searchText);
-
-
-        return SubinstructionResource::collection($subinstructions)->response();
     }
 
     /**
