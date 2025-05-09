@@ -44,7 +44,6 @@ class InstructionController extends Controller
             'title' => 'required|string|max:255',
             'logo' => 'required|string|max:255',
             'short_description' => 'required|string|max:500',
-            'description' => 'required|string',
         ]);
         $instruction = Instruction::create($newInstruction);
 
@@ -87,7 +86,6 @@ class InstructionController extends Controller
             'title' => 'string|max:255',
             'logo' => 'string|max:255',
             'short_description' => 'string|max:500',
-            'description' => 'string',
         ]);
 
         foreach ($instruction->fillable as $field) {
