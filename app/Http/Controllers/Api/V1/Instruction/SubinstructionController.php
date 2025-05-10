@@ -23,19 +23,14 @@ class SubinstructionController extends Controller
     {
         $perPage = $request->query('per_page') ?? 10;
 
-        $subinstructions = $subinstructionService->search($request->search ?? '');
+        $validatedRequest = $request->validate([
+            'search' => '',
+            'instruction_id' => ''
+        ]);
+
+        $subinstructions = $subinstructionService->filter($validatedRequest);
 
         return SubinstructionResource::collection($subinstructions->paginate($perPage))->response();
-    }
-
-    public function search(Request $request, SubinstructionService $subinstructionService)
-    {
-        $searchText = $request->get('search');
-
-        $subinstructions = $subinstructionService->search($searchText);
-
-
-        return SubinstructionResource::collection($subinstructions)->response();
     }
 
     /**
@@ -52,8 +47,8 @@ class SubinstructionController extends Controller
         $newSubinstruction = $request->validate([
             'title' => 'required|string|max:255',
             'logo' => 'required|string|max:255',
-            'short_content' => 'required|string|max:500',
-            'content' => 'required|string',
+            'short_description' => 'required|string|max:500',
+            'description' => 'required|string',
         ]);
         $subinstruction = Subinstruction::create(array_merge($newSubinstruction, ['instruction_id' => $request->instruction_id]));
 
@@ -95,8 +90,8 @@ class SubinstructionController extends Controller
         $data = $request->validate([
             'title' => 'string|max:255',
             'logo' => 'string|max:255',
-            'short_content' => 'string|max:500',
-            'content' => 'string',
+            'short_description' => 'string|max:500',
+            'description' => 'string',
         ]);
 
         foreach ($subinstruction->fillable as $field) {

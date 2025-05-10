@@ -10,7 +10,6 @@ class Instruction extends Model
         'title',
         'logo',
         'short_description',
-        'description'
     ];
 
     public function subinstructions()
